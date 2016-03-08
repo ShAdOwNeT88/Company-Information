@@ -23,7 +23,10 @@
       android:label="@string/title_activity_search"
       android:theme="@style/AppTheme.NoActionBar">
     </activity>
-    <activity android:name=".add_company.AddActivity">
+    <activity
+      android:name=".add_company.AddActivity"
+      android:label="@string/title_activity_add"
+      android:theme="@style/AppTheme.NoActionBar">
     </activity>
   </application>
 

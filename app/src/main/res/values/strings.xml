@@ -12,4 +12,5 @@
   <string name="second_menu"> Inserisci azienda</string>
   <string name="third_menu"> About us</string>
   <string name="title_activity_search">SearchActivity</string>
+  <string name="title_activity_add">AddActivity</string>
 </resources>
