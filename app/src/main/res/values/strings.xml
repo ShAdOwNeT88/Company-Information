@@ -11,4 +11,5 @@
   <string name="first_menu"> Ricerca azienda</string>
   <string name="second_menu"> Inserisci azienda</string>
   <string name="third_menu"> About us</string>
+  <string name="title_activity_search">SearchActivity</string>
 </resources>
