@@ -10,18 +10,29 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.sql.SQLException;
+import java.util.List;
+
+import alterego.solutions.company_information.Company;
 import alterego.solutions.company_information.R;
+import alterego.solutions.company_information.dbHelper.DBHelper;
 import alterego.solutions.company_information.search_company.SearchActivity;
 
 public class AddActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+
+    DBHelper dbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
+
+        dbHandler = new DBHelper(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_add_company);
@@ -33,8 +44,26 @@ public class AddActivity extends AppCompatActivity implements NavigationView.OnN
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                //.setAction("Action", null).show();
+                //Company company = new Company("CazzoFiga", "Cazzolandia", "Via Pumicipu", "0811111", "32900000", "Alla rotonda fai come cazzo vuoi");
+                //dbHandler.addCompany(company);
+
+                dbHandler.exportDB();
+
+                //dbHandler.deleteAllCompanys();
+
+                /*// Reading all contacts
+                Log.d("Reading: ", "Reading all company..");
+                List<Company> companys = dbHandler.getAllCompanys();
+
+                for (Company co : companys) {
+                    String log = "Id: "+co.getId()+" ,Name: " + co.getName() + " ,Country: " + co.getCountry() + " ,Street: " + co.getStreet()
+                            + " ,Tel: " + co.getTel() + " ,Cell: " + co.getCell() + " ,Description: " + co.getDescription();
+                    // Writing Contacts to log
+                    Log.d("Company in db: ", log);
+                }*/
+
             }
         });
 
