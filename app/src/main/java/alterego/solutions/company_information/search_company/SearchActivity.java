@@ -39,6 +39,8 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        final String[] companysearched = new String[1];
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -50,8 +52,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         mCompanySearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                String company_to_search = query;
-
+               companysearched[0] = query;
                 //TODO add method to search the company passed calling searchPresenter
                 return false;
             }
@@ -68,7 +69,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, companysearched[0].toString(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });

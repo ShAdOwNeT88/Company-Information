@@ -43,8 +43,6 @@ public class AddActivity extends AppCompatActivity implements NavigationView.OnN
     @Bind(R.id.company_description)
     EditText description;
 
-
-    DBHelper dbHandler;
     DbManagmentPresenter mManagerPresenter;
 
     @Override
@@ -52,7 +50,6 @@ public class AddActivity extends AppCompatActivity implements NavigationView.OnN
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
         ButterKnife.bind(this);
-        dbHandler = new DBHelper(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
