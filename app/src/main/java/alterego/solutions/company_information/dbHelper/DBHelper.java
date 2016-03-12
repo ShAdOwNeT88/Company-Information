@@ -178,19 +178,20 @@ public class DBHelper extends SQLiteOpenHelper implements IDBHelper {
     @Override
     public void importDB() {
 
-        //TODO Fix folder
+        SQLiteDatabase db = this.getReadableDatabase();
+
         try {
             File sd = Environment.getExternalStorageDirectory();
-            File data  = Environment.getDataDirectory();
+            File direct = new File(Environment.getExternalStorageDirectory() + "/CompanyInformation_Backup");
 
             if (sd.canWrite()) {
-                String  currentDBPath= "//data//" + "PackageName" + "//databases//" + "DatabaseName";
-                String backupDBPath  = "/BackupFolder/DatabaseName";
-                File  backupDB= new File(data, currentDBPath);
-                File currentDB  = new File(sd, backupDBPath);
+                String currentDBPath = db.getPath();
+                String backupDBPath  = "/DatabaseDump";
+                File currentDB = new File(currentDBPath);
+                File backupDB = new File(direct, backupDBPath);
 
-                FileChannel src = new FileInputStream(currentDB).getChannel();
-                FileChannel dst = new FileOutputStream(backupDB).getChannel();
+                FileChannel src = new FileInputStream(backupDB).getChannel();
+                FileChannel dst = new FileOutputStream(currentDB).getChannel();
                 dst.transferFrom(src, 0, src.size());
                 src.close();
                 dst.close();
@@ -221,7 +222,6 @@ public class DBHelper extends SQLiteOpenHelper implements IDBHelper {
 
         try {
             File sd = Environment.getExternalStorageDirectory();
-            File data = Environment.getDataDirectory();
 
             if (sd.canWrite()) {
                 String currentDBPath = db.getPath();
@@ -239,7 +239,7 @@ public class DBHelper extends SQLiteOpenHelper implements IDBHelper {
             }
         } catch (Exception e) {
 
-            Log.e("Export DB error", e.toString());
+            Log.e("Export DB error:", e.toString());
 
         }
     }

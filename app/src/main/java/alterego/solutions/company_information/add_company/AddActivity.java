@@ -10,12 +10,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
 import alterego.solutions.company_information.R;
 import alterego.solutions.company_information.dbHelper.DBHelper;
+import alterego.solutions.company_information.dbHelper.DbManagmentPresenter;
 import alterego.solutions.company_information.search_company.SearchActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -43,6 +45,7 @@ public class AddActivity extends AppCompatActivity implements NavigationView.OnN
 
 
     DBHelper dbHandler;
+    DbManagmentPresenter mManagerPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,14 +68,24 @@ public class AddActivity extends AppCompatActivity implements NavigationView.OnN
         final String cl = cell.getText().toString();
         final String desc = description.getText().toString();
 
+        mManagerPresenter = new DbManagmentPresenter(this);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                AddPresenter mPresenter = new AddPresenter(nm,ct,str,ph,cl,desc,getApplicationContext());
-                mPresenter.addCompany();
-                Snackbar.make(view, "Azienda aggiunta al database", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                if(!nm.isEmpty() && !ct.isEmpty() && !str.isEmpty() && !ph.isEmpty()) {
+                    AddPresenter mPresenter = new AddPresenter(nm, ct, str, ph, cl, desc, getApplicationContext());
+                    mPresenter.addCompany();
+                    Snackbar.make(view, "Azienda aggiunta al database", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    deleteField();
+                }
+
+                else{
+                    Snackbar.make(view, "Campi obbligatori: Nome, Città, Strada, Telefono", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
+                }
             }
         });
 
@@ -80,6 +93,32 @@ public class AddActivity extends AppCompatActivity implements NavigationView.OnN
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id){
+
+            case R.id.action_dump_db:
+                mManagerPresenter.backupDB();
+                return super.onOptionsItemSelected(item);
+
+            case R.id.action_restore_db:
+                mManagerPresenter.restoreDB();
+                return super.onOptionsItemSelected(item);
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
 
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -107,4 +146,13 @@ public class AddActivity extends AppCompatActivity implements NavigationView.OnN
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public void deleteField(){
+        name.setText("Nome Azienda");
+        city.setText("Città Azienda");
+        street.setText("Via Azienda");
+        phone.setText("Telefono Azienda");
+        cell.setText("Cellulare Azienda");
+        description.setText("Indicazioni Stradali Azienda");
+    };
 }
