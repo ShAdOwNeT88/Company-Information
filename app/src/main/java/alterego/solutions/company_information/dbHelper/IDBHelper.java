@@ -10,6 +10,7 @@ public interface IDBHelper{
 
     boolean addCompany(Company company);
     Company getCompany(int id);
+    Company searchCompanyByName(String companyName);
     List<Company> getAllCompanys();
     int updateCompany(Company company);
     void deleteCompany(Company company);

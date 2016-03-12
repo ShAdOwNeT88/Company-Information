@@ -10,19 +10,37 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
-import java.sql.SQLException;
-import java.util.List;
-
-import alterego.solutions.company_information.Company;
 import alterego.solutions.company_information.R;
 import alterego.solutions.company_information.dbHelper.DBHelper;
 import alterego.solutions.company_information.search_company.SearchActivity;
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 
 public class AddActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+
+    @Bind(R.id.company_name)
+    EditText name;
+
+    @Bind(R.id.company_city)
+    EditText city;
+
+    @Bind(R.id.company_street)
+    EditText street;
+
+    @Bind(R.id.company_phone)
+    EditText phone;
+
+    @Bind(R.id.company_cell)
+    EditText cell;
+
+    @Bind(R.id.company_description)
+    EditText description;
+
 
     DBHelper dbHandler;
 
@@ -30,7 +48,7 @@ public class AddActivity extends AppCompatActivity implements NavigationView.OnN
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
-
+        ButterKnife.bind(this);
         dbHandler = new DBHelper(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -40,30 +58,21 @@ public class AddActivity extends AppCompatActivity implements NavigationView.OnN
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        final String nm = name.getText().toString();
+        final String ct = city.getText().toString();
+        final String str = street.getText().toString();
+        final String ph = phone.getText().toString();
+        final String cl = cell.getText().toString();
+        final String desc = description.getText().toString();
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                //.setAction("Action", null).show();
-                //Company company = new Company("CazzoFiga", "Cazzolandia", "Via Pumicipu", "0811111", "32900000", "Alla rotonda fai come cazzo vuoi");
-                //dbHandler.addCompany(company);
 
-                dbHandler.exportDB();
-
-                //dbHandler.deleteAllCompanys();
-
-                /*// Reading all contacts
-                Log.d("Reading: ", "Reading all company..");
-                List<Company> companys = dbHandler.getAllCompanys();
-
-                for (Company co : companys) {
-                    String log = "Id: "+co.getId()+" ,Name: " + co.getName() + " ,Country: " + co.getCountry() + " ,Street: " + co.getStreet()
-                            + " ,Tel: " + co.getTel() + " ,Cell: " + co.getCell() + " ,Description: " + co.getDescription();
-                    // Writing Contacts to log
-                    Log.d("Company in db: ", log);
-                }*/
-
+                AddPresenter mPresenter = new AddPresenter(nm,ct,str,ph,cl,desc,getApplicationContext());
+                mPresenter.addCompany();
+                Snackbar.make(view, "Azienda aggiunta al database", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
 

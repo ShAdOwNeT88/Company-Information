@@ -80,7 +80,7 @@ public class DBHelper extends SQLiteOpenHelper implements IDBHelper {
         return true;
     }
 
-    // Getting single company
+    // Getting single company by id
     @Override
     public Company getCompany(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -88,6 +88,20 @@ public class DBHelper extends SQLiteOpenHelper implements IDBHelper {
         Cursor cursor = db.query(TABLE_COMPANY, new String[]{COLUMN_ID, COLUMN_COMPANY_NAME,
                         COLUMN_COMPANY_COUNTRY, COLUMN_COMPANY_STREET, COLUMN_COMPANY_TEL, COLUMN_COMPANY_CELL, COLUMN_COMPANY_DESCRIPTION}, COLUMN_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
+        if (cursor != null)
+            cursor.moveToFirst();
+        Company company = new Company(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6));
+
+        return company;
+    }
+
+    @Override
+    public Company searchCompanyByName(String companyName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_COMPANY, new String[]{COLUMN_ID, COLUMN_COMPANY_NAME,
+                        COLUMN_COMPANY_COUNTRY, COLUMN_COMPANY_STREET, COLUMN_COMPANY_TEL, COLUMN_COMPANY_CELL, COLUMN_COMPANY_DESCRIPTION}, COLUMN_COMPANY_NAME + "=?",
+                new String[]{companyName}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
         Company company = new Company(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6));
@@ -210,7 +224,6 @@ public class DBHelper extends SQLiteOpenHelper implements IDBHelper {
             File data = Environment.getDataDirectory();
 
             if (sd.canWrite()) {
-                //String  currentDBPath= "//data//" + "PackageName" + "//databases//" + "DatabaseName";
                 String currentDBPath = db.getPath();
                 String backupDBPath  = "/DatabaseDump";
                 File currentDB = new File(currentDBPath);
