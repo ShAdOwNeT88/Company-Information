@@ -11,18 +11,22 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
 
 import alterego.solutions.company_information.R;
 import alterego.solutions.company_information.add_company.AddActivity;
+import alterego.solutions.company_information.dbHelper.DbManagmentPresenter;
 import butterknife.Bind;
 
 public class SearchActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     @Bind(R.id.searchView_company)
     SearchView mCompanySearchView;
+
+    DbManagmentPresenter mManagerPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +39,12 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        final String[] companysearched = new String[1];
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        mManagerPresenter = new DbManagmentPresenter(this);
 
         mCompanySearchView = (SearchView) findViewById(R.id.searchView_company);
 
@@ -44,8 +52,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         mCompanySearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                String company_to_search = query;
-
+               companysearched[0] = query;
                 //TODO add method to search the company passed calling searchPresenter
                 return false;
             }
@@ -62,10 +69,37 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, companysearched[0].toString(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id){
+
+            case R.id.action_dump_db:
+                mManagerPresenter.backupDB();
+                return super.onOptionsItemSelected(item);
+
+            case R.id.action_restore_db:
+                mManagerPresenter.restoreDB();
+                return super.onOptionsItemSelected(item);
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
