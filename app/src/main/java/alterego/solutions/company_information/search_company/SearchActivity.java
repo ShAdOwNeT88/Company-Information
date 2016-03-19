@@ -25,6 +25,7 @@ import java.util.List;
 import alterego.solutions.company_information.Company;
 import alterego.solutions.company_information.R;
 import alterego.solutions.company_information.add_company.AddActivity;
+import alterego.solutions.company_information.dbHelper.DBHelper;
 import alterego.solutions.company_information.dbHelper.DbManagmentPresenter;
 import alterego.solutions.company_information.models.CompanyAdapter;
 import butterknife.Bind;
@@ -74,6 +75,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 mSearchPresenter = new SearchPresenter(query, getApplicationContext());
                 mAdapter = new CompanyAdapter(mSearchPresenter.manageQuery());
                 mRecyclerView.setAdapter(mAdapter);
+
                 return true;
             }
 

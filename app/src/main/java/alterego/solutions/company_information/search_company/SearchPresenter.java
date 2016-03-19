@@ -18,11 +18,11 @@ public class SearchPresenter {
 
     public SearchPresenter(String Companysearched, Context Context) {
         this.context = Context;
-        this.search = Companysearched;
+        this.search = Companysearched.toUpperCase();
     }
 
     public ArrayList<Company> manageQuery(){
-        if(search.equals("tutte")){
+        if(search.equals("TUTTE")){
             searchAllCompanies();
         }
         else searchCompany();
