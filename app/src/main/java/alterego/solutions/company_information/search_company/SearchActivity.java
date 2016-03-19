@@ -10,15 +10,23 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import alterego.solutions.company_information.Company;
 import alterego.solutions.company_information.R;
 import alterego.solutions.company_information.add_company.AddActivity;
 import alterego.solutions.company_information.dbHelper.DbManagmentPresenter;
+import alterego.solutions.company_information.models.CompanyAdapter;
 import butterknife.Bind;
 
 public class SearchActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -27,6 +35,14 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     SearchView mCompanySearchView;
 
     DbManagmentPresenter mManagerPresenter;
+
+    SearchPresenter mSearchPresenter;
+
+    private RecyclerView mRecyclerView;
+
+    private RecyclerView.Adapter mAdapter;
+
+    private static String LOG_TAG = "CardViewActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +55,13 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        final String[] companysearched = new String[1];
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.search_company_recycle_view);
+        mRecyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
         mManagerPresenter = new DbManagmentPresenter(this);
 
@@ -52,25 +71,15 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         mCompanySearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-               companysearched[0] = query;
-                //TODO add method to search the company passed calling searchPresenter
-                return false;
+                mSearchPresenter = new SearchPresenter(query, getApplicationContext());
+                mAdapter = new CompanyAdapter(mSearchPresenter.manageQuery());
+                mRecyclerView.setAdapter(mAdapter);
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;
-            }
-        });
-
-
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.search_fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, companysearched[0].toString(), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
             }
         });
     }
