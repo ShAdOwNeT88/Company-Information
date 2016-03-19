@@ -29,7 +29,8 @@ public class SearchPresenter {
 
         return companies;
     }
-    //Method for search company using DBHelper for database manipulation
+
+    //Local method for search company using DBHelper for database manipulation
     private ArrayList<Company> searchCompany(){
 
         mHelper = new DBHelper(context);
@@ -39,7 +40,7 @@ public class SearchPresenter {
         return companies;
     }
 
-    //Method for return all compaies with blank query in search view
+    //Local method for return all compaies with blank query in search view
     private ArrayList<Company> searchAllCompanies(){
         mHelper = new DBHelper(context);
         companies = (ArrayList<Company>)mHelper.getAllCompanys();
