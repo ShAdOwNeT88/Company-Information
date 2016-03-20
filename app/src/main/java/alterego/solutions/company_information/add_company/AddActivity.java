@@ -13,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,7 +34,7 @@ import me.zhanghai.android.customtabshelper.CustomTabsHelperFragment;
 
 public class AddActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    @Bind(R.id.company_name)
+    /*@Bind(R.id.company_name)
     EditText name;
 
     @Bind(R.id.company_city)
@@ -49,7 +50,7 @@ public class AddActivity extends AppCompatActivity implements NavigationView.OnN
     EditText cell;
 
     @Bind(R.id.company_description)
-    EditText description;
+    EditText description;*/
 
     @BindColor(R.color.colorPrimary)
     int mColorPrimary;
@@ -59,6 +60,8 @@ public class AddActivity extends AppCompatActivity implements NavigationView.OnN
     private CustomTabsHelperFragment mCustomTabsHelperFragment;
 
     private CustomTabsIntent mCustomTabsIntent;
+
+    EditText name,city,street,phone,cell,description;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +76,13 @@ public class AddActivity extends AppCompatActivity implements NavigationView.OnN
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        name = (EditText) findViewById(R.id.company_name);
+        city = (EditText) findViewById(R.id.company_city);
+        street = (EditText) findViewById(R.id.company_street);
+        phone = (EditText) findViewById(R.id.company_phone);
+        cell = (EditText) findViewById(R.id.company_cell);
+        description = (EditText) findViewById(R.id.company_description);
+
         mCustomTabsHelperFragment = CustomTabsHelperFragment.attachTo(this);
 
         mCustomTabsIntent = new CustomTabsIntent.Builder()
@@ -81,28 +91,27 @@ public class AddActivity extends AppCompatActivity implements NavigationView.OnN
                 .setShowTitle(true)
                 .build();
 
-        final String nm = name.getText().toString();
-        final String ct = city.getText().toString();
-        final String str = street.getText().toString();
-        final String ph = phone.getText().toString();
-        final String cl = cell.getText().toString();
-        final String desc = description.getText().toString();
-
         mManagerPresenter = new DbManagmentPresenter(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_fab);
         fab.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
 
-                if(!nm.isEmpty() && !ct.isEmpty() && !str.isEmpty() && !ph.isEmpty()) {
-                    AddPresenter mPresenter = new AddPresenter(nm, ct, str, ph, cl, desc, getApplicationContext());
+                if(!String.valueOf(name.getText()).isEmpty() && !String.valueOf(city.getText()).isEmpty() && !String.valueOf(street.getText()).isEmpty()
+                        && !String.valueOf(phone.getText()).isEmpty()) {
+
+                    AddPresenter mPresenter = new AddPresenter(String.valueOf(name.getText()), String.valueOf(city.getText()),
+                            String.valueOf(street.getText()), String.valueOf(phone.getText()), String.valueOf(cell.getText()), String.valueOf(description.getText()),
+                            getApplicationContext());
                     mPresenter.addCompany();
                     Snackbar.make(view, "Azienda aggiunta al database", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                     deleteField();
                 }
 
                 else{
+                    Log.e("TEST EDITTEXT",String.valueOf(name.getText()));
                     Snackbar.make(view, "Campi obbligatori: Nome, Città, Strada, Telefono", Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
                 }

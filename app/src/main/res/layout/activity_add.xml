@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+
+<android.support.v4.widget.DrawerLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/drawer_layout_add_company"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:fitsSystemWindows="true"
   tools:context="alterego.solutions.company_information.add_company.AddActivity">
+
+<android.support.design.widget.CoordinatorLayout
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:fitsSystemWindows="true">
 
   <android.support.design.widget.AppBarLayout
     android:layout_width="match_parent"
@@ -22,7 +29,102 @@
 
   </android.support.design.widget.AppBarLayout>
 
-  <include layout="@layout/content_add"/>
+  <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:weightSum="1">
+
+    <EditText
+      android:id="@+id/company_name"
+      android:layout_marginLeft="15dp"
+      android:layout_marginTop="45dp"
+      android:layout_marginBottom="20dp"
+      android:layout_marginRight="15dp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ellipsize="start"
+      android:gravity="center"
+      android:hint="Nome Azienda"
+      android:inputType="text"
+      android:background="@drawable/edit_text_style"/>
+
+    <EditText
+      android:id="@+id/company_city"
+      android:layout_marginLeft="15dp"
+      android:layout_marginTop="15dp"
+      android:layout_marginBottom="20dp"
+      android:layout_marginRight="15dp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ellipsize="start"
+      android:gravity="center"
+      android:hint="Città Azienda"
+      android:inputType="text"
+      android:background="@drawable/edit_text_style"/>
+
+    <EditText
+      android:id="@+id/company_street"
+      android:layout_marginLeft="15dp"
+      android:layout_marginTop="15dp"
+      android:layout_marginBottom="20dp"
+      android:layout_marginRight="15dp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ellipsize="start"
+      android:gravity="center"
+      android:hint="Via Azienda"
+      android:inputType="text"
+      android:background="@drawable/edit_text_style"/>
+
+    <EditText
+      android:id="@+id/company_phone"
+      android:layout_marginLeft="15dp"
+      android:layout_marginTop="15dp"
+      android:layout_marginBottom="20dp"
+      android:layout_marginRight="15dp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ellipsize="start"
+      android:gravity="center"
+      android:hint="Telefono Azienda"
+      android:inputType="phone"
+      android:background="@drawable/edit_text_style"/>
+
+    <EditText
+      android:id="@+id/company_cell"
+      android:layout_marginLeft="15dp"
+      android:layout_marginTop="15dp"
+      android:layout_marginBottom="20dp"
+      android:layout_marginRight="15dp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ellipsize="start"
+      android:gravity="center"
+      android:hint="Cellulare Azienda"
+      android:inputType="text"
+      android:background="@drawable/edit_text_style"/>
+
+    <EditText
+      android:id="@+id/company_description"
+      android:layout_marginLeft="15dp"
+      android:layout_marginTop="15dp"
+      android:layout_marginBottom="20dp"
+      android:layout_marginRight="15dp"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:ellipsize="start"
+      android:gravity="center"
+      android:hint="Indicazioni stradali Azienda"
+      android:inputType="textMultiLine"
+      android:background="@drawable/edit_text_style"
+      android:layout_weight="0.41"/>
+
+  </LinearLayout>
 
   <android.support.design.widget.FloatingActionButton
     android:id="@+id/add_fab"
@@ -33,3 +135,18 @@
     android:src="@drawable/ic_add"/>
 
 </android.support.design.widget.CoordinatorLayout>
+
+    <android.support.design.widget.NavigationView
+      android:id="@+id/nav_view"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_gravity="start"
+      android:fitsSystemWindows="true"
+      app:headerLayout="@layout/nav_header_main"
+      app:menu="@menu/activity_main_drawer"/>
+
+  </android.support.v4.widget.DrawerLayout>
+
+
+
+

@@ -30,7 +30,7 @@ public class AddPresenter implements IAddPresenter{
     public void addCompany() {
 
         mDbManager = new DBHelper(context);
-        Company cmp = new Company(name,country,street,tel,cell,description);
+        Company cmp = new Company(name.toUpperCase(),country.toUpperCase(),street.toUpperCase(),tel.toUpperCase(),cell.toUpperCase(),description.toUpperCase());
         mDbManager.addCompany(cmp);
     }
 }
