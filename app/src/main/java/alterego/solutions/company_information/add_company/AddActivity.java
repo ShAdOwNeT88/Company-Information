@@ -1,7 +1,10 @@
 package alterego.solutions.company_information.add_company;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -14,13 +17,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import org.chromium.customtabsclient.CustomTabsActivityHelper;
 
 import alterego.solutions.company_information.R;
 import alterego.solutions.company_information.dbHelper.DBHelper;
 import alterego.solutions.company_information.dbHelper.DbManagmentPresenter;
 import alterego.solutions.company_information.search_company.SearchActivity;
 import butterknife.Bind;
+import butterknife.BindColor;
 import butterknife.ButterKnife;
+import me.zhanghai.android.customtabshelper.CustomTabsHelperFragment;
 
 
 public class AddActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -43,7 +51,14 @@ public class AddActivity extends AppCompatActivity implements NavigationView.OnN
     @Bind(R.id.company_description)
     EditText description;
 
+    @BindColor(R.color.colorPrimary)
+    int mColorPrimary;
+
     DbManagmentPresenter mManagerPresenter;
+
+    private CustomTabsHelperFragment mCustomTabsHelperFragment;
+
+    private CustomTabsIntent mCustomTabsIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +72,14 @@ public class AddActivity extends AppCompatActivity implements NavigationView.OnN
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+
+        mCustomTabsHelperFragment = CustomTabsHelperFragment.attachTo(this);
+
+        mCustomTabsIntent = new CustomTabsIntent.Builder()
+                .enableUrlBarHiding()
+                .setToolbarColor(mColorPrimary)
+                .setShowTitle(true)
+                .build();
 
         final String nm = name.getText().toString();
         final String ct = city.getText().toString();
@@ -133,6 +156,7 @@ public class AddActivity extends AppCompatActivity implements NavigationView.OnN
                 startActivity(add);
                 break;
             case R.id.about_us:
+                CustomTabsHelperFragment.open(this, mCustomTabsIntent, Uri.parse("http://alterego.solutions"), mCustomTabsFallback);
                 break;
             default:
                 break;
@@ -151,5 +175,17 @@ public class AddActivity extends AppCompatActivity implements NavigationView.OnN
         phone.setText("Telefono Azienda");
         cell.setText("Cellulare Azienda");
         description.setText("Indicazioni Stradali Azienda");
-    };
+    }
+
+    protected final CustomTabsActivityHelper.CustomTabsFallback mCustomTabsFallback =
+            (activity, uri) -> {
+                Toast.makeText(activity, R.string.custom_tab_error, Toast.LENGTH_SHORT).show();
+                try {
+                    activity.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                } catch (ActivityNotFoundException e) {
+                    e.printStackTrace();
+                    Toast.makeText(activity, R.string.custom_tab_error_activity, Toast.LENGTH_SHORT)
+                            .show();
+                }
+            };
 }

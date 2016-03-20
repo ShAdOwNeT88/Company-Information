@@ -14,4 +14,6 @@
   <string name="third_menu"> About us</string>
   <string name="title_activity_search">Ricerca Azienda</string>
   <string name="title_activity_add">Aggiungi Azienda</string>
+  <string name="custom_tab_error"> Non hai installato il browser Google Chrome</string>
+  <string name="custom_tab_error_activity"> Impossibile lanciare l attività di browsing</string>
 </resources>

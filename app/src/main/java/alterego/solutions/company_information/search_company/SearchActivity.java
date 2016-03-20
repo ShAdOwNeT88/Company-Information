@@ -1,9 +1,12 @@
 package alterego.solutions.company_information.search_company;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.BinderThread;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -19,8 +22,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+
+import org.chromium.customtabsclient.CustomTabsActivityHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +38,16 @@ import alterego.solutions.company_information.dbHelper.DBHelper;
 import alterego.solutions.company_information.dbHelper.DbManagmentPresenter;
 import alterego.solutions.company_information.models.CompanyAdapter;
 import butterknife.Bind;
+import butterknife.BindColor;
+import me.zhanghai.android.customtabshelper.CustomTabsHelperFragment;
 
 public class SearchActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     @Bind(R.id.searchView_company)
     SearchView mCompanySearchView;
+
+    @BindColor(R.color.colorPrimary)
+    int mColorPrimary;
 
     DbManagmentPresenter mManagerPresenter;
 
@@ -47,6 +58,11 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     private RecyclerView.Adapter mAdapter;
 
     private static String LOG_TAG = "CardViewActivity";
+
+    private CustomTabsHelperFragment mCustomTabsHelperFragment;
+
+    private CustomTabsIntent mCustomTabsIntent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +86,14 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mManagerPresenter = new DbManagmentPresenter(this);
+
+        mCustomTabsHelperFragment = CustomTabsHelperFragment.attachTo(this);
+
+        mCustomTabsIntent = new CustomTabsIntent.Builder()
+                .enableUrlBarHiding()
+                .setToolbarColor(mColorPrimary)
+                .setShowTitle(true)
+                .build();
 
         mCompanySearchView = (SearchView) findViewById(R.id.searchView_company);
 
@@ -134,6 +158,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 startActivity(add);
                 break;
             case R.id.about_us:
+                CustomTabsHelperFragment.open(this, mCustomTabsIntent, Uri.parse("http://alterego.solutions"), mCustomTabsFallback);
                 break;
             default:
                 break;
@@ -144,4 +169,17 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    protected final CustomTabsActivityHelper.CustomTabsFallback mCustomTabsFallback =
+            (activity, uri) -> {
+                Toast.makeText(activity, R.string.custom_tab_error, Toast.LENGTH_SHORT).show();
+                try {
+                    activity.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                } catch (ActivityNotFoundException e) {
+                    e.printStackTrace();
+                    Toast.makeText(activity, R.string.custom_tab_error_activity, Toast.LENGTH_SHORT)
+                            .show();
+                }
+            };
 }
+

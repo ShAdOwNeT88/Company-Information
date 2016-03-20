@@ -1,9 +1,27 @@
-apply plugin: 'com.android.application'
+buildscript {
+    repositories {
+        mavenCentral()
+    }
 
-repositories {
-    jcenter()
-    maven { url "https://jitpack.io" }
+    dependencies {
+        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
+    }
 }
+
+// Required because retrolambda is on maven central
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'com.android.application' //or apply plugin: 'java'
+apply plugin: 'me.tatarka.retrolambda'
+repositories {
+    maven { url "https://jitpack.io" }
+    mavenCentral()
+    jcenter()
+}
+
+apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
@@ -25,6 +43,11 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -42,4 +65,6 @@ dependencies {
     compile('com.github.afollestad.material-dialogs:core:0.8.5.3@aar') {
         transitive = true
     }
+
+    compile 'com.github.DreaminginCodeZH:CustomTabsHelper:v1.0.1'
 }
