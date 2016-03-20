@@ -4,14 +4,14 @@
   <string name="navigation_drawer_open">Open navigation drawer</string>
   <string name="navigation_drawer_close">Close navigation drawer</string>
 
-  <string name="action_dump_db">Export DB</string>
-  <string name="action_restore_db">Import DB</string>
+  <string name="action_dump_db">Esporta DB</string>
+  <string name="action_restore_db">Importa DB</string>
 
-  <string name="header_description">Ottieni tutte le informazioni per l azienda che cerchi</string>
+  <string name="header_description">Ottieni tutte le informazioni per l'azienda che cerchi</string>
 
   <string name="first_menu"> Ricerca azienda</string>
   <string name="second_menu"> Inserisci azienda</string>
   <string name="third_menu"> About us</string>
-  <string name="title_activity_search">SearchActivity</string>
-  <string name="title_activity_add">AddActivity</string>
+  <string name="title_activity_search">Ricerca Azienda</string>
+  <string name="title_activity_add">Aggiungi Azienda</string>
 </resources>
