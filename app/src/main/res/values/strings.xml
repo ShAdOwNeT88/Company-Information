@@ -7,7 +7,7 @@
   <string name="action_dump_db">Esporta DB</string>
   <string name="action_restore_db">Importa DB</string>
 
-  <string name="header_description">Ottieni tutte le informazioni per l'azienda che cerchi</string>
+  <string name="header_description">Ottieni tutte le informazioni per l azienda che cerchi</string>
 
   <string name="first_menu"> Ricerca azienda</string>
   <string name="second_menu"> Inserisci azienda</string>
