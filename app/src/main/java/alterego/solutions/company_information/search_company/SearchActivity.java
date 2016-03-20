@@ -1,5 +1,6 @@
 package alterego.solutions.company_information.search_company;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.BinderThread;
@@ -18,6 +19,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +59,8 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        final Context ctx = this;
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -73,7 +78,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
             @Override
             public boolean onQueryTextSubmit(String query) {
                 mSearchPresenter = new SearchPresenter(query, getApplicationContext());
-                mAdapter = new CompanyAdapter(mSearchPresenter.manageQuery());
+                mAdapter = new CompanyAdapter(mSearchPresenter.manageQuery(),ctx);
                 mRecyclerView.setAdapter(mAdapter);
 
                 return true;

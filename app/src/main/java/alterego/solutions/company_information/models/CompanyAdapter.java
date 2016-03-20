@@ -1,14 +1,13 @@
 package alterego.solutions.company_information.models;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
+import com.afollestad.materialdialogs.MaterialDialog;
 import java.util.ArrayList;
 
 import alterego.solutions.company_information.Company;
@@ -17,9 +16,15 @@ import alterego.solutions.company_information.R;
 public class CompanyAdapter extends RecyclerView.
         Adapter<CompanyAdapter.CompanyHolder>{
 
-    private static String LOG_TAG = "MyRecyclerViewAdapter";
+    private static String LOG_TAG = "CompanyAdapter";
     private ArrayList<Company> mDataset;
-    //private static MyClickListener myClickListener;
+    String description;
+    Context context;
+
+    public CompanyAdapter(ArrayList<Company> myDataset, Context applicationContext) {
+        mDataset = myDataset;
+        context = applicationContext;
+    }
 
     @Override
     public CompanyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -35,8 +40,8 @@ public class CompanyAdapter extends RecyclerView.
         holder.street.setText(mDataset.get(position).getStreet());
         holder.phone.setText(mDataset.get(position).getTel());
         holder.cellphone.setText(mDataset.get(position).getCell());
-
-
+        //save company description into a string
+        description = mDataset.get(position).getDescription();
     }
 
     @Override
@@ -54,7 +59,7 @@ public class CompanyAdapter extends RecyclerView.
         notifyItemRemoved(index);
     }
 
-    public class CompanyHolder extends RecyclerView.ViewHolder implements OnClickListener {
+    public class CompanyHolder extends RecyclerView.ViewHolder{
 
         TextView name,country,street,phone,cellphone;
 
@@ -65,18 +70,22 @@ public class CompanyAdapter extends RecyclerView.
             street = (TextView) itemView.findViewById(R.id.company_street);
             phone = (TextView) itemView.findViewById(R.id.company_phone);
             cellphone = (TextView) itemView.findViewById(R.id.company_cell);
-            itemView.setOnClickListener(this);
-        }
+            itemView.setOnClickListener(new View.OnClickListener(){
 
-        @Override
-        public void onClick(View v) {
-            //add click reaction
+                @Override
+                public void onClick(View v) {
+                    //on click show a material dialog with information to easly find the way
+
+                    MaterialDialog.Builder builder = new MaterialDialog.Builder(context)
+                            .title("Indicazioni Stradali " + name.getText())
+                            .content(description)
+                            .positiveText("OK");
+
+                    MaterialDialog dialog = builder.build();
+                    dialog.show();
+                }
+            });
         }
     }
-
-    public CompanyAdapter(ArrayList<Company> myDataset) {
-        mDataset = myDataset;
-    }
-
 }
 
