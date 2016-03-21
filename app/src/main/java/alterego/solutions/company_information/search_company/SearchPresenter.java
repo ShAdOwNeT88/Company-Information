@@ -34,8 +34,7 @@ public class SearchPresenter {
     private ArrayList<Company> searchCompany(){
 
         mHelper = new DBHelper(context);
-        Company c = mHelper.searchCompanyByName(search);
-        companies.add(c);
+        companies = mHelper.searchCompanyByName(search);
 
         return companies;
     }

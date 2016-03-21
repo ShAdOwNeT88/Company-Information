@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -95,18 +94,22 @@ public class DBHelper extends SQLiteOpenHelper implements IDBHelper {
         return company;
     }
 
-    @Override
-    public Company searchCompanyByName(String companyName) {
-        SQLiteDatabase db = this.getReadableDatabase();
+    //Method for searching company with name string
+        @Override
+        public ArrayList<Company> searchCompanyByName(String companyName) {
 
-        Cursor cursor = db.query(TABLE_COMPANY, new String[]{COLUMN_ID, COLUMN_COMPANY_NAME,
-                        COLUMN_COMPANY_COUNTRY, COLUMN_COMPANY_STREET, COLUMN_COMPANY_TEL, COLUMN_COMPANY_CELL, COLUMN_COMPANY_DESCRIPTION}, COLUMN_COMPANY_NAME + "=?",
-                new String[]{companyName}, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
-        Company company = new Company(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6));
+        ArrayList<Company> companies = (ArrayList<Company>) getAllCompanys();
 
-        return company;
+            ArrayList<Company> searchedComp = new ArrayList<>();
+
+            for(int i=0; i<companies.size(); i++){
+                if(companies.get(i).getName().contains(companyName)){
+                    Company c = new Company(companies.get(i).getId(),companies.get(i).getName(),companies.get(i).getCountry(),
+                    companies.get(i).getStreet(),companies.get(i).getTel(),companies.get(i).getCell(),companies.get(i).getDescription());
+                    searchedComp.add(c);
+                }
+            }
+        return searchedComp;
     }
 
     // Getting All Company
