@@ -1,5 +1,6 @@
 package alterego.solutions.company_information.search_company;
 
+import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -95,7 +96,11 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 .setShowTitle(true)
                 .build();
 
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         mCompanySearchView = (SearchView) findViewById(R.id.searchView_company);
+
+        mCompanySearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        mCompanySearchView.setIconifiedByDefault(false);
 
         mCompanySearchView.setQueryHint("Nome Azienda");
         mCompanySearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
