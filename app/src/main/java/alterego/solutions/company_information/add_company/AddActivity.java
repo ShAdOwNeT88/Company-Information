@@ -20,6 +20,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.chromium.customtabsclient.CustomTabsActivityHelper;
 
 import alterego.solutions.company_information.R;
@@ -29,6 +31,7 @@ import alterego.solutions.company_information.search_company.SearchActivity;
 import butterknife.Bind;
 import butterknife.BindColor;
 import butterknife.ButterKnife;
+import io.fabric.sdk.android.Fabric;
 import me.zhanghai.android.customtabshelper.CustomTabsHelperFragment;
 
 
@@ -68,7 +71,7 @@ public class AddActivity extends AppCompatActivity implements NavigationView.OnN
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
         ButterKnife.bind(this);
-
+        Fabric.with(this, new Crashlytics());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_add_company);

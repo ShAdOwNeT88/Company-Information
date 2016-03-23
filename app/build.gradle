@@ -1,19 +1,23 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven { url 'https://maven.fabric.io/public' }
     }
 
     dependencies {
         classpath 'me.tatarka:gradle-retrolambda:3.2.5'
+        classpath 'io.fabric.tools:gradle:1.+'
     }
 }
 
 // Required because retrolambda is on maven central
 repositories {
     mavenCentral()
+    maven { url 'https://maven.fabric.io/public' }
 }
 
-apply plugin: 'com.android.application' //or apply plugin: 'java'
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric' //or apply plugin: 'java'
 apply plugin: 'me.tatarka.retrolambda'
 repositories {
     maven { url "https://jitpack.io" }
@@ -67,4 +71,7 @@ dependencies {
     }
 
     compile 'com.github.DreaminginCodeZH:CustomTabsHelper:v1.0.1'
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
+        transitive = true;
+    }
 }
