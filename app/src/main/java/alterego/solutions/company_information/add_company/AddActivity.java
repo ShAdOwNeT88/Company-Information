@@ -27,6 +27,7 @@ import org.chromium.customtabsclient.CustomTabsActivityHelper;
 import alterego.solutions.company_information.R;
 import alterego.solutions.company_information.dbHelper.DBHelper;
 import alterego.solutions.company_information.dbHelper.DbManagmentPresenter;
+import alterego.solutions.company_information.runtime_permission.PermissionManager;
 import alterego.solutions.company_information.search_company.SearchActivity;
 import butterknife.Bind;
 import butterknife.BindColor;
@@ -78,6 +79,10 @@ public class AddActivity extends AppCompatActivity implements NavigationView.OnN
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+
+        PermissionManager pm = new PermissionManager(this);
+        pm.managingPermission();
+        pm.managingPermission();
 
         name = (EditText) findViewById(R.id.company_name);
         city = (EditText) findViewById(R.id.company_city);
