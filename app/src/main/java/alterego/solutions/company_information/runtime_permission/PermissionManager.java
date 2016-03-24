@@ -45,9 +45,9 @@ public class PermissionManager implements IPermissionManager {
             // Check if the only required permission has been granted
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Memory permission has been granted, preview can be displayed
-                Toast.makeText(activity, R.string.custom_tab_error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, R.string.permision_available_storage, Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(activity, R.string.custom_tab_error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, R.string.permissions_not_granted_storage, Toast.LENGTH_SHORT).show();
             }
         }
     }
