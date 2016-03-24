@@ -28,6 +28,8 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import com.crashlytics.android.Crashlytics;
+
+import alterego.solutions.company_information.runtime_permission.PermissionManager;
 import io.fabric.sdk.android.Fabric;
 import org.chromium.customtabsclient.CustomTabsActivityHelper;
 
@@ -78,6 +80,10 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+
+        PermissionManager pm = new PermissionManager(this);
+        pm.managingPermission();
+        pm.managingPermission();
 
         final Context ctx = this;
 

@@ -16,4 +16,6 @@
   <string name="title_activity_add">Aggiungi Azienda</string>
   <string name="custom_tab_error"> Non hai installato il browser Google Chrome</string>
   <string name="custom_tab_error_activity"> Impossibile lanciare l attività di browsing</string>
+  <string name="permision_available_storage"/>
+  <string name="permissions_not_granted_storage"/>
 </resources>
