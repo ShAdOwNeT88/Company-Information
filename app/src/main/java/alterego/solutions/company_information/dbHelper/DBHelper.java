@@ -30,6 +30,8 @@ public class DBHelper extends SQLiteOpenHelper implements IDBHelper {
     public static final String COLUMN_COMPANY_DESCRIPTION = "Description";
     public static final int DATABASE_VERSION = 1;
 
+    String message_returned = null;
+
     public DBHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -179,7 +181,7 @@ public class DBHelper extends SQLiteOpenHelper implements IDBHelper {
 
     //importing DB
     @Override
-    public void importDB() {
+    public String importDB() {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -199,16 +201,19 @@ public class DBHelper extends SQLiteOpenHelper implements IDBHelper {
                 src.close();
                 dst.close();
                 Log.e("Import DB", backupDB.toString());
-
+                message_returned = "Import DB eseguito dalla cartella: " + backupDB.toString();
             }
         } catch (Exception e) {
             Log.e("Import DB error:", e.toString());
+            message_returned = "Import DB error: Non esiste una cartella che contiene il file di backup";
         }
+
+        return message_returned;
     }
 
     //export DB
     @Override
-    public void exportDB() {
+    public String exportDB() {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -238,13 +243,17 @@ public class DBHelper extends SQLiteOpenHelper implements IDBHelper {
                 src.close();
                 dst.close();
                 Log.e("Export DB", backupDB.toString());
-
+                message_returned = "Export DB nella cartella: " + backupDB.toString();
             }
         } catch (Exception e) {
 
             Log.e("Export DB error:", e.toString());
+            message_returned = "Errore Export DB: " + e.toString();
+
 
         }
+
+        return message_returned;
     }
 
 }

@@ -2,6 +2,7 @@ package alterego.solutions.company_information.dbHelper;
 
 
 import android.content.Context;
+import android.widget.Toast;
 
 public class DbManagmentPresenter implements IDbManagment{
 
@@ -15,11 +16,15 @@ public class DbManagmentPresenter implements IDbManagment{
 
     @Override
     public void backupDB() {
-        manager.exportDB();
+        String s = manager.exportDB();
+        Toast toast = Toast.makeText(context,s,Toast.LENGTH_LONG);
+        toast.show();
     }
 
     @Override
     public void restoreDB() {
-        manager.importDB();
+        String s = manager.importDB();
+        Toast toast = Toast.makeText(context,s,Toast.LENGTH_LONG);
+        toast.show();
     }
 }
