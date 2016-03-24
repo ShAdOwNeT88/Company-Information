@@ -10,6 +10,17 @@ buildscript {
     }
 }
 
+repositories {
+    maven { url "https://jitpack.io" }
+    mavenCentral()
+    jcenter()
+}
+
+repositories {
+    maven {
+        url  "http://dl.bintray.com/lukaville/maven"
+    }
+}
 // Required because retrolambda is on maven central
 repositories {
     mavenCentral()
@@ -19,12 +30,6 @@ repositories {
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric' //or apply plugin: 'java'
 apply plugin: 'me.tatarka.retrolambda'
-repositories {
-    maven { url "https://jitpack.io" }
-    mavenCentral()
-    jcenter()
-}
-
 apply plugin: 'com.android.application'
 
 android {
@@ -74,4 +79,5 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true;
     }
+    compile 'com.nbsp:library:1.08'
 }

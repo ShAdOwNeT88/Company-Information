@@ -22,8 +22,8 @@ public class DbManagmentPresenter implements IDbManagment{
     }
 
     @Override
-    public void restoreDB() {
-        String s = manager.importDB();
+    public void restoreDB(String path) {
+        String s = manager.importDB(path);
         Toast toast = Toast.makeText(context,s,Toast.LENGTH_LONG);
         toast.show();
     }

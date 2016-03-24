@@ -13,7 +13,7 @@ public interface IDBHelper{
     int updateCompany(Company company);
     void deleteCompany(Company company);
     void deleteAllCompanys();
-    String importDB();
+    String importDB(String pathOfImport);
     String exportDB();
 
 }

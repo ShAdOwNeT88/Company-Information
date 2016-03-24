@@ -181,19 +181,20 @@ public class DBHelper extends SQLiteOpenHelper implements IDBHelper {
 
     //importing DB
     @Override
-    public String importDB() {
+    public String importDB(String pathOfImport) {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
         try {
             File sd = Environment.getExternalStorageDirectory();
-            File direct = new File(Environment.getExternalStorageDirectory() + "/CompanyInformation_Backup");
+            //File direct = new File(Environment.getExternalStorageDirectory() + "/CompanyInformation_Backup");
 
             if (sd.canWrite()) {
                 String currentDBPath = db.getPath();
-                String backupDBPath  = "/DatabaseDump";
+                String backupDBPath  = "/DatabaseDump.sqlite";
                 File currentDB = new File(currentDBPath);
-                File backupDB = new File(direct, backupDBPath);
+                //File backupDB = new File(direct, backupDBPath);
+                File backupDB = new File(pathOfImport);
 
                 FileChannel src = new FileInputStream(backupDB).getChannel();
                 FileChannel dst = new FileOutputStream(currentDB).getChannel();
@@ -233,7 +234,7 @@ public class DBHelper extends SQLiteOpenHelper implements IDBHelper {
 
             if (sd.canWrite()) {
                 String currentDBPath = db.getPath();
-                String backupDBPath  = "/DatabaseDump";
+                String backupDBPath  = "/DatabaseDump.sqlite";
                 File currentDB = new File(currentDBPath);
                 File backupDB = new File(direct, backupDBPath);
 

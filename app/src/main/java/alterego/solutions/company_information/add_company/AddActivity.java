@@ -21,8 +21,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.nbsp.materialfilepicker.MaterialFilePicker;
+import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 
 import org.chromium.customtabsclient.CustomTabsActivityHelper;
+
+import java.util.regex.Pattern;
 
 import alterego.solutions.company_information.R;
 import alterego.solutions.company_information.dbHelper.DBHelper;
@@ -149,7 +153,8 @@ public class AddActivity extends AppCompatActivity implements NavigationView.OnN
                 return super.onOptionsItemSelected(item);
 
             case R.id.action_restore_db:
-                mManagerPresenter.restoreDB();
+                //mManagerPresenter.restoreDB();
+                getPathForDb();
                 return super.onOptionsItemSelected(item);
             default:
                 return super.onOptionsItemSelected(item);
@@ -205,4 +210,28 @@ public class AddActivity extends AppCompatActivity implements NavigationView.OnN
                             .show();
                 }
             };
+
+    //Launch File Picker and get the path of the file for db.
+    public void getPathForDb(){
+
+        new MaterialFilePicker()
+                .withActivity(this)
+                .withRequestCode(1)
+                .withFilter(Pattern.compile(".*\\.sqlite$")) // Filtering files and directories by file name using regexp
+                .withFilterDirectories(false) // Set directories filterable (false by default)
+                .withHiddenFiles(true) // Show hidden files and folders
+                .start();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            String filePath = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
+            // Do anything with file
+            Log.e("PATH OF THE DB",filePath);
+            mManagerPresenter.restoreDB(filePath);
+        }
+    }
 }
