@@ -40,6 +40,7 @@
 
       <SearchView
         android:id="@+id/searchView_company"
+        android:searchIcon="@drawable/ic_search_white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"

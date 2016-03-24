@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.BinderThread;
@@ -23,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -107,11 +109,24 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         mCompanySearchView = (SearchView) findViewById(R.id.searchView_company);
+        mCompanySearchView.setQueryHint("Nome Azienda");
 
         mCompanySearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         mCompanySearchView.setIconifiedByDefault(false);
 
-        mCompanySearchView.setQueryHint("Nome Azienda");
+        //Applies white color on searchview text
+        int id = mCompanySearchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        TextView textView = (TextView) mCompanySearchView.findViewById(id);
+        textView.setTextColor(Color.WHITE);
+        textView.setHintTextColor(Color.WHITE);
+
+
+
+        //Inizialize presenter to show all the company in database
+        mSearchPresenter = new SearchPresenter("tutte", getApplicationContext());
+        mAdapter = new CompanyAdapter(mSearchPresenter.manageQuery(),ctx);
+        mRecyclerView.setAdapter(mAdapter);
+
         mCompanySearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
