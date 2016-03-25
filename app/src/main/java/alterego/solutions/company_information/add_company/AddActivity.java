@@ -191,12 +191,12 @@ public class AddActivity extends AppCompatActivity implements NavigationView.OnN
     }
 
     public void deleteField(){
-        name.setText("Nome Azienda");
-        city.setText("Città Azienda");
-        street.setText("Via Azienda");
-        phone.setText("Telefono Azienda");
-        cell.setText("Cellulare Azienda");
-        description.setText("Indicazioni Stradali Azienda");
+        name.setText("");
+        city.setText("");
+        street.setText("");
+        phone.setText("");
+        cell.setText("");
+        description.setText("");
     }
 
     protected final CustomTabsActivityHelper.CustomTabsFallback mCustomTabsFallback =

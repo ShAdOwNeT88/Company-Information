@@ -29,6 +29,11 @@
 
   </android.support.design.widget.AppBarLayout>
 
+  <ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
   <LinearLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -39,92 +44,80 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:weightSum="1">
 
-    <EditText
+    <com.rengwuxian.materialedittext.MaterialEditText
       android:id="@+id/company_name"
-      android:layout_marginLeft="15dp"
-      android:layout_marginTop="45dp"
-      android:layout_marginBottom="20dp"
-      android:layout_marginRight="15dp"
+      android:layout_marginLeft="10dp"
+      android:layout_marginTop="35dp"
+      android:layout_marginBottom="5dp"
+      android:layout_marginRight="10dp"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:ellipsize="start"
-      android:gravity="center"
-      android:hint="Nome Azienda"
-      android:inputType="text"
-      android:background="@drawable/edit_text_style"/>
+      android:hint="@string/edit_nome"
+      app:met_floatingLabel="highlight"
+      android:inputType="text"/>
 
-    <EditText
+    <com.rengwuxian.materialedittext.MaterialEditText
       android:id="@+id/company_city"
-      android:layout_marginLeft="15dp"
-      android:layout_marginTop="15dp"
-      android:layout_marginBottom="20dp"
-      android:layout_marginRight="15dp"
+      android:layout_marginLeft="10dp"
+      android:layout_marginTop="5dp"
+      android:layout_marginBottom="5dp"
+      android:layout_marginRight="10dp"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:ellipsize="start"
-      android:gravity="center"
-      android:hint="Città Azienda"
-      android:inputType="text"
-      android:background="@drawable/edit_text_style"/>
+      android:hint="@string/edit_citta"
+      app:met_floatingLabel="highlight"
+      android:inputType="text"/>
 
-    <EditText
+    <com.rengwuxian.materialedittext.MaterialEditText
       android:id="@+id/company_street"
-      android:layout_marginLeft="15dp"
-      android:layout_marginTop="15dp"
-      android:layout_marginBottom="20dp"
-      android:layout_marginRight="15dp"
+      android:layout_marginLeft="10dp"
+      android:layout_marginTop="5dp"
+      android:layout_marginBottom="5dp"
+      android:layout_marginRight="10dp"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:ellipsize="start"
-      android:gravity="center"
-      android:hint="Via Azienda"
-      android:inputType="text"
-      android:background="@drawable/edit_text_style"/>
+      android:hint="@string/edit_via"
+      app:met_floatingLabel="highlight"
+      android:inputType="text"/>
 
-    <EditText
+    <com.rengwuxian.materialedittext.MaterialEditText
       android:id="@+id/company_phone"
-      android:layout_marginLeft="15dp"
-      android:layout_marginTop="15dp"
-      android:layout_marginBottom="20dp"
-      android:layout_marginRight="15dp"
+      android:layout_marginLeft="10dp"
+      android:layout_marginTop="5dp"
+      android:layout_marginBottom="5dp"
+      android:layout_marginRight="10dp"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:ellipsize="start"
-      android:gravity="center"
-      android:hint="Telefono Azienda"
-      android:inputType="phone"
-      android:background="@drawable/edit_text_style"/>
+      android:hint="@string/edit_tel"
+      app:met_floatingLabel="highlight"
+      android:inputType="phone"/>
 
-    <EditText
+    <com.rengwuxian.materialedittext.MaterialEditText
       android:id="@+id/company_cell"
-      android:layout_marginLeft="15dp"
-      android:layout_marginTop="15dp"
-      android:layout_marginBottom="20dp"
-      android:layout_marginRight="15dp"
+      android:layout_marginLeft="10dp"
+      android:layout_marginTop="5dp"
+      android:layout_marginBottom="5dp"
+      android:layout_marginRight="10dp"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:ellipsize="start"
-      android:gravity="center"
-      android:hint="Cellulare Azienda"
-      android:inputType="text"
-      android:background="@drawable/edit_text_style"/>
+      android:hint="@string/edit_cellulare"
+      app:met_floatingLabel="highlight"
+      android:inputType="phone"/>
 
-    <EditText
+    <com.rengwuxian.materialedittext.MaterialEditText
       android:id="@+id/company_description"
-      android:layout_marginLeft="15dp"
-      android:layout_marginTop="15dp"
-      android:layout_marginBottom="20dp"
-      android:layout_marginRight="15dp"
+      android:layout_marginLeft="10dp"
+      android:layout_marginTop="5dp"
+      android:layout_marginBottom="5dp"
+      android:layout_marginRight="10dp"
       android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:ellipsize="start"
-      android:gravity="center"
-      android:hint="Indicazioni stradali Azienda"
-      android:inputType="textMultiLine"
-      android:background="@drawable/edit_text_style"
-      android:layout_weight="0.41"/>
+      android:layout_height="wrap_content"
+      android:hint="@string/edit_descr"
+      app:met_floatingLabel="highlight"
+      android:inputType="text"/>
 
   </LinearLayout>
+  </ScrollView>
 
   <android.support.design.widget.FloatingActionButton
     android:id="@+id/add_fab"
