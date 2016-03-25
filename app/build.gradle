@@ -75,9 +75,16 @@ dependencies {
         transitive = true
     }
 
+    //Custom Tab Helper
     compile 'com.github.DreaminginCodeZH:CustomTabsHelper:v1.0.1'
+
+    //Crashalytics
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true;
     }
     compile 'com.nbsp:library:1.08'
+
+    //Material EditText
+    compile 'com.rengwuxian.materialedittext:library:2.1.4'
+
 }

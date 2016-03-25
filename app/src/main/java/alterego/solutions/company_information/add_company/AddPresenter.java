@@ -1,6 +1,10 @@
 package alterego.solutions.company_information.add_company;
 
 import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import alterego.solutions.company_information.Company;
 import alterego.solutions.company_information.dbHelper.DBHelper;
@@ -26,11 +30,41 @@ public class AddPresenter implements IAddPresenter{
 
 
 
-    @Override
-    public void addCompany() {
 
+    @Override
+    public boolean addCompany() {
         mDbManager = new DBHelper(context);
+
         Company cmp = new Company(name.toUpperCase(),country.toUpperCase(),street.toUpperCase(),tel.toUpperCase(),cell.toUpperCase(),description.toUpperCase());
-        mDbManager.addCompany(cmp);
+
+        boolean exist = checkIfCompanyExist(cmp,mDbManager);
+
+        if(exist){
+            return true;
+        }
+        else {
+            mDbManager.addCompany(cmp);
+            return false;
+        }
     }
+
+    //Method for searching if Company is in database
+
+    @Override
+    public boolean checkIfCompanyExist(Company cmp,DBHelper helper) {
+
+        boolean exsist = false;
+
+        ArrayList<Company> companies = (ArrayList<Company>) helper.getAllCompanys();
+
+        for(int i=0; i<companies.size(); i++){
+            if(companies.get(i).getName().equalsIgnoreCase(cmp.getName())){
+                exsist = true;
+            }
+        }
+
+        return exsist;
+    }
+
+
 }

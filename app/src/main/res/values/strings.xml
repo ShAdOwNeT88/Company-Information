@@ -18,4 +18,12 @@
   <string name="custom_tab_error_activity"> Impossibile lanciare l attività di browsing</string>
   <string name="permision_available_storage"> Permessi di scrittura abilitati per l app</string>
   <string name="permissions_not_granted_storage">Permessi di scrittura NON abilitati per l app</string>
+  <string name="edit_nome"> Nome Azienda</string>
+  <string name="edit_citta"> Citta Azienda</string>
+  <string name="edit_via"> Via Azienda</string>
+  <string name="edit_tel"> Telefono Azienda</string>
+  <string name="edit_cellulare">Cellulare Azienda</string>
+  <string name="edit_descr">Indicazioni Stradali Azienda</string>
+
+
 </resources>

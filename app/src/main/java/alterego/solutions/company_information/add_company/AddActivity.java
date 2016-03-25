@@ -117,15 +117,22 @@ public class AddActivity extends AppCompatActivity implements NavigationView.OnN
                     AddPresenter mPresenter = new AddPresenter(String.valueOf(name.getText()), String.valueOf(city.getText()),
                             String.valueOf(street.getText()), String.valueOf(phone.getText()), String.valueOf(cell.getText()), String.valueOf(description.getText()),
                             getApplicationContext());
-                    mPresenter.addCompany();
-                    Snackbar.make(view, "Azienda aggiunta al database", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                    deleteField();
+
+                    boolean isAdded = mPresenter.addCompany();
+
+                    if(isAdded){
+                        Snackbar.make(view, "Azienda già presente nel database", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    }
+
+                    if(!isAdded){
+                        Snackbar.make(view, "Azienda aggiunta al database", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        deleteField();
+                    }
                 }
 
                 else{
                     Log.e("TEST EDITTEXT",String.valueOf(name.getText()));
                     Snackbar.make(view, "Campi obbligatori: Nome, Città, Strada, Telefono", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-
                 }
             }
         });
@@ -191,12 +198,12 @@ public class AddActivity extends AppCompatActivity implements NavigationView.OnN
     }
 
     public void deleteField(){
-        name.setText("Nome Azienda");
-        city.setText("Città Azienda");
-        street.setText("Via Azienda");
-        phone.setText("Telefono Azienda");
-        cell.setText("Cellulare Azienda");
-        description.setText("Indicazioni Stradali Azienda");
+        name.setText("");
+        city.setText("");
+        street.setText("");
+        phone.setText("");
+        cell.setText("");
+        description.setText("");
     }
 
     protected final CustomTabsActivityHelper.CustomTabsFallback mCustomTabsFallback =
