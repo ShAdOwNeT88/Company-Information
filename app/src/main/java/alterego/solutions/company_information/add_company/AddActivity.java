@@ -117,15 +117,22 @@ public class AddActivity extends AppCompatActivity implements NavigationView.OnN
                     AddPresenter mPresenter = new AddPresenter(String.valueOf(name.getText()), String.valueOf(city.getText()),
                             String.valueOf(street.getText()), String.valueOf(phone.getText()), String.valueOf(cell.getText()), String.valueOf(description.getText()),
                             getApplicationContext());
-                    mPresenter.addCompany();
-                    Snackbar.make(view, "Azienda aggiunta al database", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                    deleteField();
+
+                    boolean isAdded = mPresenter.addCompany();
+
+                    if(isAdded){
+                        Snackbar.make(view, "Azienda già presente nel database", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    }
+
+                    if(!isAdded){
+                        Snackbar.make(view, "Azienda aggiunta al database", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        deleteField();
+                    }
                 }
 
                 else{
                     Log.e("TEST EDITTEXT",String.valueOf(name.getText()));
                     Snackbar.make(view, "Campi obbligatori: Nome, Città, Strada, Telefono", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-
                 }
             }
         });
