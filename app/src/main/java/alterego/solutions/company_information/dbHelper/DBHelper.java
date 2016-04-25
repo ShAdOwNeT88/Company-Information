@@ -167,8 +167,7 @@ public class DBHelper extends SQLiteOpenHelper implements IDBHelper {
     @Override
     public void deleteCompany(Company company) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_COMPANY, COLUMN_ID + " = ?",
-                new String[]{String.valueOf(company.getId())});
+        db.delete(TABLE_COMPANY, COLUMN_COMPANY_NAME + "=? and " + COLUMN_COMPANY_COUNTRY + "=?" , new String[]{company.getName(),company.getCountry()});
         db.close();
     }
 

@@ -2,16 +2,20 @@ package alterego.solutions.company_information.models;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import java.util.ArrayList;
 
 import alterego.solutions.company_information.Company;
 import alterego.solutions.company_information.R;
+import alterego.solutions.company_information.dbHelper.DBHelper;
 
 public class CompanyAdapter extends RecyclerView.
         Adapter<CompanyAdapter.CompanyHolder>{
@@ -85,7 +89,47 @@ public class CompanyAdapter extends RecyclerView.
                     dialog.show();
                 }
             });
+
+            itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener(){
+
+                DBHelper dbHelper = new DBHelper(context);
+
+                @Override
+                public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+
+                    Company c = new Company(name.getText().toString(),country.getText().toString(),street.getText().toString()
+                            ,phone.getText().toString(),cellphone.getText().toString(),description);
+
+                    menu.add("Elimina").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+
+                            dbHelper.deleteCompany(c);
+                            CharSequence text = "Eliminazione Voce: " + name.getText();
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                            return true;
+
+                        }
+                    });
+
+                    menu.add("Modifica").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+
+                            CharSequence text = "Modifica Voce!";
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                            return true;
+
+                        }
+                    });
+                }
+
+            });
         }
     }
 }
-
