@@ -1,6 +1,12 @@
 package alterego.solutions.company_information.models;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -11,14 +17,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+
+import java.security.Permission;
 import java.util.ArrayList;
 
 import alterego.solutions.company_information.Company;
 import alterego.solutions.company_information.R;
 import alterego.solutions.company_information.dbHelper.DBHelper;
+import alterego.solutions.company_information.runtime_permission.PermissionManager;
 
 public class CompanyAdapter extends RecyclerView.
-        Adapter<CompanyAdapter.CompanyHolder>{
+        Adapter<CompanyAdapter.CompanyHolder> {
 
     private static String LOG_TAG = "CompanyAdapter";
     private ArrayList<Company> mDataset;
@@ -39,6 +48,7 @@ public class CompanyAdapter extends RecyclerView.
 
     @Override
     public void onBindViewHolder(CompanyHolder holder, int position) {
+
         holder.name.setText(mDataset.get(position).getName());
         holder.country.setText(mDataset.get(position).getCountry());
         holder.street.setText(mDataset.get(position).getStreet());
@@ -47,6 +57,8 @@ public class CompanyAdapter extends RecyclerView.
         //save company description into a string
         description = mDataset.get(position).getDescription();
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -63,9 +75,9 @@ public class CompanyAdapter extends RecyclerView.
         notifyItemRemoved(index);
     }
 
-    public class CompanyHolder extends RecyclerView.ViewHolder{
+    public class CompanyHolder extends RecyclerView.ViewHolder {
 
-        TextView name,country,street,phone,cellphone;
+        TextView name, country, street, phone, cellphone;
 
         public CompanyHolder(View itemView) {
             super(itemView);
@@ -74,7 +86,33 @@ public class CompanyAdapter extends RecyclerView.
             street = (TextView) itemView.findViewById(R.id.company_street);
             phone = (TextView) itemView.findViewById(R.id.company_phone);
             cellphone = (TextView) itemView.findViewById(R.id.company_cell);
-            itemView.setOnClickListener(new View.OnClickListener(){
+
+
+            //Launch call when click on phone number
+            phone.setOnClickListener(new View.OnClickListener() {
+                @SuppressWarnings("MissingPermission")
+                @Override
+                public void onClick(View v) {
+                    String number = "tel:" + phone.getText().toString().trim();
+                    Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse(number));
+                    context.startActivity(callIntent);
+                }
+            });
+
+            //Launch call when click on cellphone number
+            cellphone.setOnClickListener(new View.OnClickListener() {
+                @SuppressWarnings("MissingPermission")
+                @Override
+                public void onClick(View v) {
+                    String number = "tel:" + cellphone.getText().toString().trim();
+                    Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse(number));
+                    context.startActivity(callIntent);
+                }
+            });
+
+
+            //Launch dialog to show description of place
+            itemView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
@@ -90,6 +128,7 @@ public class CompanyAdapter extends RecyclerView.
                 }
             });
 
+            //Launch submenu with entry delete/edit for an entry
             itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener(){
 
                 DBHelper dbHelper = new DBHelper(context);
@@ -115,6 +154,7 @@ public class CompanyAdapter extends RecyclerView.
                         }
                     });
 
+                    //TODO Fix modify
                     menu.add("Modifica").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {

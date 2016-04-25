@@ -1,5 +1,6 @@
 package alterego.solutions.company_information.search_company;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -72,6 +73,8 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     private CustomTabsHelperFragment mCustomTabsHelperFragment;
 
     private CustomTabsIntent mCustomTabsIntent;
+
+    private Activity activity;
 
 
     @Override

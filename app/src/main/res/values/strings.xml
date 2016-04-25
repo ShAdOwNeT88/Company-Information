@@ -24,6 +24,8 @@
   <string name="edit_tel"> Telefono Azienda</string>
   <string name="edit_cellulare">Cellulare Azienda</string>
   <string name="edit_descr">Indicazioni Stradali Azienda</string>
+  <string name="permision_available_call">Permessi telefonici abilitati</string>
+  <string name="permissions_not_granted_call">Permessi telefonici disabilitati</string>
 
 
 </resources>
