@@ -3,9 +3,13 @@ package alterego.solutions.company_information.runtime_permission;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import alterego.solutions.company_information.R;
 
@@ -17,38 +21,30 @@ public class PermissionManager implements IPermissionManager {
         this.activity = Activity;
     }
 
-    private int MY_PERMISSION_WRITE_EXTERNAL_STORAGE = 1;
+    private int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
 
     @Override
     public void managingPermission() {
-
-        if (ContextCompat.checkSelfPermission(activity,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
-            } else {
-
-                ActivityCompat.requestPermissions(activity,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        MY_PERMISSION_WRITE_EXTERNAL_STORAGE);
-            }
+        int permissionSendMessage = ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.CALL_PHONE);
+        int locationPermission = ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        if (locationPermission != PackageManager.PERMISSION_GRANTED) {
+            //check for call permission
+            listPermissionsNeeded.add(Manifest.permission.CALL_PHONE);
+        }
+        if (permissionSendMessage != PackageManager.PERMISSION_GRANTED) {
+            //check for write external storage permission
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            //Request multiple permission with multiple dialog
+            ActivityCompat.requestPermissions(activity, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),REQUEST_ID_MULTIPLE_PERMISSIONS);
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == MY_PERMISSION_WRITE_EXTERNAL_STORAGE) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-            // Check if the only required permission has been granted
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Memory permission has been granted, preview can be displayed
-                Toast.makeText(activity, R.string.permision_available_storage, Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(activity, R.string.permissions_not_granted_storage, Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 }

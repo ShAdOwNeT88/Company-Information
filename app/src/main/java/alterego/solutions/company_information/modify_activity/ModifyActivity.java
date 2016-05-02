@@ -1,14 +1,9 @@
-package alterego.solutions.company_information.search_company;
+package alterego.solutions.company_information.modify_activity;
 
-import android.app.Activity;
-import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.BinderThread;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -17,74 +12,75 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.SearchView;
-import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
-
-import com.afollestad.materialdialogs.MaterialDialog;
 
 import com.crashlytics.android.Crashlytics;
 import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 
-import alterego.solutions.company_information.runtime_permission.PermissionManager;
-import io.fabric.sdk.android.Fabric;
 import org.chromium.customtabsclient.CustomTabsActivityHelper;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Pattern;
 
-import alterego.solutions.company_information.Company;
 import alterego.solutions.company_information.R;
 import alterego.solutions.company_information.add_company.AddActivity;
-import alterego.solutions.company_information.dbHelper.DBHelper;
 import alterego.solutions.company_information.dbHelper.DbManagmentPresenter;
-import alterego.solutions.company_information.models.CompanyAdapter;
-import butterknife.Bind;
+import alterego.solutions.company_information.runtime_permission.PermissionManager;
+import alterego.solutions.company_information.search_company.SearchActivity;
 import butterknife.BindColor;
+import butterknife.ButterKnife;
+import io.fabric.sdk.android.Fabric;
 import me.zhanghai.android.customtabshelper.CustomTabsHelperFragment;
 
-public class SearchActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    @Bind(R.id.searchView_company)
-    SearchView mCompanySearchView;
+public class ModifyActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+
+    /*@Bind(R.id.company_name)
+    EditText name;
+
+    @Bind(R.id.company_city)
+    EditText city;
+
+    @Bind(R.id.company_street)
+    EditText street;
+
+    @Bind(R.id.company_phone)
+    EditText phone;
+
+    @Bind(R.id.company_cell)
+    EditText cell;
+
+    @Bind(R.id.company_description)
+    EditText description;*/
 
     @BindColor(R.color.colorPrimary)
     int mColorPrimary;
 
     DbManagmentPresenter mManagerPresenter;
 
-    SearchPresenter mSearchPresenter;
-
-    private RecyclerView mRecyclerView;
-
-    private RecyclerView.Adapter mAdapter;
-
-    private static String LOG_TAG = "CardViewActivity";
-
     private CustomTabsHelperFragment mCustomTabsHelperFragment;
 
     private CustomTabsIntent mCustomTabsIntent;
 
-    private Activity activity;
-
+    EditText name,city,street,phone,cell,description;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add);
+        ButterKnife.bind(this);
         Fabric.with(this, new Crashlytics());
-        setContentView(R.layout.activity_search);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_search_company);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_add_company);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
@@ -93,17 +89,24 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         pm.managingPermission();
         pm.managingPermission();
 
-        final Context ctx = this;
+        Bundle extras = getIntent().getExtras();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        name = (EditText) findViewById(R.id.company_name);
+        city = (EditText) findViewById(R.id.company_city);
+        street = (EditText) findViewById(R.id.company_street);
+        phone = (EditText) findViewById(R.id.company_phone);
+        cell = (EditText) findViewById(R.id.company_cell);
+        description = (EditText) findViewById(R.id.company_description);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.search_company_recycle_view);
-        mRecyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mManagerPresenter = new DbManagmentPresenter(this);
+        if(extras != null) {
+            name.setText(extras.getString("nome"));
+            city.setText(extras.getString("citta"));
+            street.setText(extras.getString("via"));
+            phone.setText(extras.getString("tel"));
+            cell.setText(extras.getString("cell"));
+            description.setText(extras.getString("descr"));
+        }
 
         mCustomTabsHelperFragment = CustomTabsHelperFragment.attachTo(this);
 
@@ -113,41 +116,38 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 .setShowTitle(true)
                 .build();
 
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        mCompanySearchView = (SearchView) findViewById(R.id.searchView_company);
-        mCompanySearchView.setQueryHint("Nome Azienda");
+        mManagerPresenter = new DbManagmentPresenter(this);
 
-        mCompanySearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        mCompanySearchView.setIconifiedByDefault(false);
-
-        //Applies white color on searchview text
-        int id = mCompanySearchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
-        TextView textView = (TextView) mCompanySearchView.findViewById(id);
-        textView.setTextColor(Color.WHITE);
-        textView.setHintTextColor(Color.WHITE);
-
-
-
-        //Inizialize presenter to show all the company in database
-        mSearchPresenter = new SearchPresenter("tutte", getApplicationContext());
-        mAdapter = new CompanyAdapter(mSearchPresenter.manageQuery(),ctx);
-        mRecyclerView.setAdapter(mAdapter);
-
-        mCompanySearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                mSearchPresenter = new SearchPresenter(query, getApplicationContext());
-                mAdapter = new CompanyAdapter(mSearchPresenter.manageQuery(),ctx);
-                mRecyclerView.setAdapter(mAdapter);
-
-                return true;
-            }
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
+            public void onClick(View view) {
+
+                if(!String.valueOf(name.getText()).isEmpty() && !String.valueOf(city.getText()).isEmpty() && !String.valueOf(street.getText()).isEmpty()
+                        && !String.valueOf(phone.getText()).isEmpty()) {
+
+                    ModifyPresenter mPresenter = new ModifyPresenter(String.valueOf(name.getText()), String.valueOf(city.getText()),
+                            String.valueOf(street.getText()), String.valueOf(phone.getText()), String.valueOf(cell.getText()), String.valueOf(description.getText()),
+                            getApplicationContext());
+
+                    boolean isAdded = mPresenter.addCompany();
+
+                    if(!isAdded){
+                        Snackbar.make(view, "Azienda modificata nel database", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        deleteField();
+                    }
+                }
+
+                else{
+                    Log.e("TEST EDITTEXT",String.valueOf(name.getText()));
+                    Snackbar.make(view, "Campi obbligatori: Nome, Città, Strada, Telefono", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
             }
         });
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
@@ -169,6 +169,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 return super.onOptionsItemSelected(item);
 
             case R.id.action_restore_db:
+                //mManagerPresenter.restoreDB();
                 getPathForDb();
                 return super.onOptionsItemSelected(item);
             default:
@@ -177,10 +178,10 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
     }
 
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-
         int id = item.getItemId();
 
         switch (id){
@@ -200,9 +201,18 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_search_company);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_add_company);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void deleteField(){
+        name.setText("");
+        city.setText("");
+        street.setText("");
+        phone.setText("");
+        cell.setText("");
+        description.setText("");
     }
 
     protected final CustomTabsActivityHelper.CustomTabsFallback mCustomTabsFallback =
@@ -240,5 +250,13 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
             mManagerPresenter.restoreDB(filePath);
         }
     }
-}
 
+    public void setFields(String nomaz, String citaz, String viaaz, String telaz, String cellaz, String descraz){
+        name.setText(nomaz);
+        city.setText(citaz);
+        street.setText(viaaz);
+        phone.setText(telaz);
+        cell.setText(cellaz);
+        description.setText(descraz);
+    }
+}

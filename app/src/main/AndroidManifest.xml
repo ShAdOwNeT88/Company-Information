@@ -2,6 +2,10 @@
 <manifest package="alterego.solutions.company_information"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
+  <uses-permission android:name="android.permission.CALL_PHONE"/>
+
+  <uses-permission android:name="android.permission.INTERNET" />
+
   <uses-permission
     android:name="android.permission.WRITE_EXTERNAL_STORAGE">
   </uses-permission>
@@ -21,16 +25,23 @@
 
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
+
     </activity>
     <activity
       android:name=".add_company.AddActivity"
       android:label="@string/title_activity_add"
       android:theme="@style/AppTheme.NoActionBar">
     </activity>
+
+    <activity
+      android:name=".modify_activity.ModifyActivity"
+      android:label="@string/title_activity_modifiy"
+      android:theme="@style/AppTheme.NoActionBar">
+    </activity>
+
       <meta-data
             android:name="io.fabric.ApiKey"
             android:value="8501bc0640d6af5e895dfc1c5d65a99fbd2c0286" />
     </application>
 
-    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
