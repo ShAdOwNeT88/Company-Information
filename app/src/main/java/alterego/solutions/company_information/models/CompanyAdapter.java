@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -23,7 +25,9 @@ import java.util.ArrayList;
 
 import alterego.solutions.company_information.Company;
 import alterego.solutions.company_information.R;
+import alterego.solutions.company_information.add_company.AddActivity;
 import alterego.solutions.company_information.dbHelper.DBHelper;
+import alterego.solutions.company_information.modify_activity.ModifyActivity;
 import alterego.solutions.company_information.runtime_permission.PermissionManager;
 
 public class CompanyAdapter extends RecyclerView.
@@ -133,19 +137,21 @@ public class CompanyAdapter extends RecyclerView.
 
                 DBHelper dbHelper = new DBHelper(context);
 
+
+
                 @Override
                 public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-
-                    Company c = new Company(name.getText().toString(),country.getText().toString(),street.getText().toString()
-                            ,phone.getText().toString(),cellphone.getText().toString(),description);
 
                     menu.add("Elimina").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
 
+                            Company c = new Company(name.getText().toString(),country.getText().toString(),street.getText().toString()
+                                    ,phone.getText().toString(),cellphone.getText().toString(),description);
+
                             dbHelper.deleteCompany(c);
-                            CharSequence text = "Eliminazione Voce: " + name.getText();
+                            CharSequence text = "Eliminazione Azienda: " + name.getText();
                             int duration = Toast.LENGTH_SHORT;
                             Toast toast = Toast.makeText(context, text, duration);
                             toast.show();
@@ -154,15 +160,35 @@ public class CompanyAdapter extends RecyclerView.
                         }
                     });
 
-                    //TODO Fix modify
                     menu.add("Modifica").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
+
+                            Company c = new Company(name.getText().toString(),country.getText().toString(),street.getText().toString()
+                                    ,phone.getText().toString(),cellphone.getText().toString(),description);
+
+
+
+                            Intent intent = new Intent(context, ModifyActivity.class);
+
+                            //Passing extras for updating Company
+                            intent.putExtra("nome", c.getName());
+                            intent.putExtra("citta",c.getCountry());
+                            intent.putExtra("via",c.getStreet());
+                            intent.putExtra("tel",c.getTel());
+                            intent.putExtra("cell",c.getCell());
+                            intent.putExtra("descr",c.getDescription());
+                            
+                            context.startActivity(intent);
 
                             CharSequence text = "Modifica Voce!";
                             int duration = Toast.LENGTH_SHORT;
                             Toast toast = Toast.makeText(context, text, duration);
                             toast.show();
+
+                            //delete old company
+                            dbHelper.deleteCompany(c);
+
                             return true;
 
                         }
