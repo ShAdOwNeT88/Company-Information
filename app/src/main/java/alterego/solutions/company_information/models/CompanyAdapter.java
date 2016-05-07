@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ public class CompanyAdapter extends RecyclerView.
     private ArrayList<Company> mDataset;
     String description;
     Context context;
+    int clickedPos;
 
     public CompanyAdapter(ArrayList<Company> myDataset, Context applicationContext) {
         mDataset = myDataset;
@@ -58,11 +60,29 @@ public class CompanyAdapter extends RecyclerView.
         holder.street.setText(mDataset.get(position).getStreet());
         holder.phone.setText(mDataset.get(position).getTel());
         holder.cellphone.setText(mDataset.get(position).getCell());
-        //save company description into a string
-        description = mDataset.get(position).getDescription();
+
+        //get the position of click in the list
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+
+            //On click display the description of company in MaterialDialog
+            @Override
+            public void onClick(View v) {
+                clickedPos = holder.getAdapterPosition();
+
+                //retrive description based on the position clicked
+                description = mDataset.get(clickedPos).getDescription();
+
+                MaterialDialog.Builder builder = new MaterialDialog.Builder(context)
+                        .title("Indicazioni Stradali " + holder.name.getText())
+                        .content(description)
+                        .positiveText("OK");
+
+                MaterialDialog dialog = builder.build();
+                dialog.show();
+
+            }
+        });
     }
-
-
 
     @Override
     public int getItemCount() {
@@ -79,7 +99,7 @@ public class CompanyAdapter extends RecyclerView.
         notifyItemRemoved(index);
     }
 
-    public class CompanyHolder extends RecyclerView.ViewHolder {
+    public class CompanyHolder extends RecyclerView.ViewHolder{
 
         TextView name, country, street, phone, cellphone;
 
@@ -90,7 +110,6 @@ public class CompanyAdapter extends RecyclerView.
             street = (TextView) itemView.findViewById(R.id.company_street);
             phone = (TextView) itemView.findViewById(R.id.company_phone);
             cellphone = (TextView) itemView.findViewById(R.id.company_cell);
-
 
             //Launch call when click on phone number
             phone.setOnClickListener(new View.OnClickListener() {
@@ -115,12 +134,86 @@ public class CompanyAdapter extends RecyclerView.
             });
 
 
-            //Launch dialog to show description of place
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    int clickedpos = getAdapterPosition();
+                    Log.e("Long press pos:", String.valueOf(clickedpos));
+
+                    //Launch submenu with entry delete/edit for an entry
+                    itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener(){
+
+                        DBHelper dbHelper = new DBHelper(context);
+                        String descr = mDataset.get(clickedpos).getDescription();
+
+                        @Override
+                        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+
+                            menu.add("Elimina").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+                                @Override
+                                public boolean onMenuItemClick(MenuItem item) {
+
+                                    Company c = new Company(name.getText().toString(),country.getText().toString(),street.getText().toString()
+                                            ,phone.getText().toString(),cellphone.getText().toString(),descr);
+
+                                    dbHelper.deleteCompany(c);
+                                    CharSequence text = "Eliminazione Azienda: " + name.getText();
+                                    int duration = Toast.LENGTH_SHORT;
+                                    Toast toast = Toast.makeText(context, text, duration);
+                                    toast.show();
+                                    return true;
+
+                                }
+                            });
+
+                            menu.add("Modifica").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                                @Override
+                                public boolean onMenuItemClick(MenuItem item) {
+
+                                    Company c = new Company(name.getText().toString(),country.getText().toString(),street.getText().toString()
+                                            ,phone.getText().toString(),cellphone.getText().toString(),descr);
+
+                                    Intent intent = new Intent(context, ModifyActivity.class);
+
+                                    //Passing extras for updating Company
+                                    intent.putExtra("nome", c.getName());
+                                    intent.putExtra("citta",c.getCountry());
+                                    intent.putExtra("via",c.getStreet());
+                                    intent.putExtra("tel",c.getTel());
+                                    intent.putExtra("cell",c.getCell());
+                                    intent.putExtra("descr",c.getDescription());
+
+                                    context.startActivity(intent);
+
+                                    CharSequence text = "Modifica Voce!";
+                                    int duration = Toast.LENGTH_SHORT;
+                                    Toast toast = Toast.makeText(context, text, duration);
+                                    toast.show();
+
+                                    //delete old company
+                                    dbHelper.deleteCompany(c);
+
+                                    return true;
+
+                                }
+                            });
+                        }
+
+                    });
+                    return false;
+                }
+            });
+            /*//Launch dialog to show description of place
             itemView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
                     //on click show a material dialog with information to easly find the way
+
+                    //save company description into a string
+                    description = mDataset.get(clickedPos).getDescription();
+                    Log.e("Position clicked", String.valueOf(clickedPos));
 
                     MaterialDialog.Builder builder = new MaterialDialog.Builder(context)
                             .title("Indicazioni Stradali " + name.getText())
@@ -130,72 +223,9 @@ public class CompanyAdapter extends RecyclerView.
                     MaterialDialog dialog = builder.build();
                     dialog.show();
                 }
-            });
-
-            //Launch submenu with entry delete/edit for an entry
-            itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener(){
-
-                DBHelper dbHelper = new DBHelper(context);
+            });*/
 
 
-
-                @Override
-                public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-
-                    menu.add("Elimina").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-
-                            Company c = new Company(name.getText().toString(),country.getText().toString(),street.getText().toString()
-                                    ,phone.getText().toString(),cellphone.getText().toString(),description);
-
-                            dbHelper.deleteCompany(c);
-                            CharSequence text = "Eliminazione Azienda: " + name.getText();
-                            int duration = Toast.LENGTH_SHORT;
-                            Toast toast = Toast.makeText(context, text, duration);
-                            toast.show();
-                            return true;
-
-                        }
-                    });
-
-                    menu.add("Modifica").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-
-                            Company c = new Company(name.getText().toString(),country.getText().toString(),street.getText().toString()
-                                    ,phone.getText().toString(),cellphone.getText().toString(),description);
-
-
-
-                            Intent intent = new Intent(context, ModifyActivity.class);
-
-                            //Passing extras for updating Company
-                            intent.putExtra("nome", c.getName());
-                            intent.putExtra("citta",c.getCountry());
-                            intent.putExtra("via",c.getStreet());
-                            intent.putExtra("tel",c.getTel());
-                            intent.putExtra("cell",c.getCell());
-                            intent.putExtra("descr",c.getDescription());
-                            
-                            context.startActivity(intent);
-
-                            CharSequence text = "Modifica Voce!";
-                            int duration = Toast.LENGTH_SHORT;
-                            Toast toast = Toast.makeText(context, text, duration);
-                            toast.show();
-
-                            //delete old company
-                            dbHelper.deleteCompany(c);
-
-                            return true;
-
-                        }
-                    });
-                }
-
-            });
         }
     }
 }

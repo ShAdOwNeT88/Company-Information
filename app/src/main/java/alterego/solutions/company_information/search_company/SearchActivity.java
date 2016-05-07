@@ -15,6 +15,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -68,6 +69,8 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
     private RecyclerView.Adapter mAdapter;
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+
     private static String LOG_TAG = "CardViewActivity";
 
     private CustomTabsHelperFragment mCustomTabsHelperFragment;
@@ -88,6 +91,10 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.search_company_swipe_container);
+        mSwipeRefreshLayout.setEnabled(false);
+        mSwipeRefreshLayout.setRefreshing(false);
 
         PermissionManager pm = new PermissionManager(this);
         pm.managingPermission();
