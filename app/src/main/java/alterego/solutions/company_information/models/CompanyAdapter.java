@@ -29,6 +29,8 @@ import alterego.solutions.company_information.R;
 import alterego.solutions.company_information.add_company.AddActivity;
 import alterego.solutions.company_information.dbHelper.DBHelper;
 import alterego.solutions.company_information.modify_activity.ModifyActivity;
+import alterego.solutions.company_information.position_activity.PositionActivity;
+import alterego.solutions.company_information.position_activity.PositionPresenter;
 import alterego.solutions.company_information.runtime_permission.PermissionManager;
 
 public class CompanyAdapter extends RecyclerView.
@@ -193,6 +195,26 @@ public class CompanyAdapter extends RecyclerView.
 
                                     //delete old company
                                     dbHelper.deleteCompany(c);
+
+                                    return true;
+
+                                }
+                            });
+
+                            menu.add("Posizione Azienda").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                                @Override
+                                public boolean onMenuItemClick(MenuItem item) {
+
+                                    Company c = new Company(name.getText().toString(),country.getText().toString(),street.getText().toString()
+                                            ,phone.getText().toString(),cellphone.getText().toString(),descr);
+
+                                    PositionPresenter presenter = new PositionPresenter(context,c);
+                                    presenter.searchPosition();
+
+                                    CharSequence text = "Posizione Azienda!!";
+                                    int duration = Toast.LENGTH_SHORT;
+                                    Toast toast = Toast.makeText(context, text, duration);
+                                    toast.show();
 
                                     return true;
 

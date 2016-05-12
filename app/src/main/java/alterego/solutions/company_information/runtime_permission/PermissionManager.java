@@ -28,6 +28,8 @@ public class PermissionManager implements IPermissionManager {
         int permissionSendMessage = ContextCompat.checkSelfPermission(activity,
                 Manifest.permission.CALL_PHONE);
         int locationPermission = ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int positionPermission = ContextCompat.checkSelfPermission(activity,Manifest.permission.ACCESS_FINE_LOCATION);
+
         List<String> listPermissionsNeeded = new ArrayList<>();
         if (locationPermission != PackageManager.PERMISSION_GRANTED) {
             //check for call permission
@@ -36,6 +38,10 @@ public class PermissionManager implements IPermissionManager {
         if (permissionSendMessage != PackageManager.PERMISSION_GRANTED) {
             //check for write external storage permission
             listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (positionPermission != PackageManager.PERMISSION_GRANTED) {
+            //check for write external storage permission
+            listPermissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION);
         }
         if (!listPermissionsNeeded.isEmpty()) {
             //Request multiple permission with multiple dialog
