@@ -42,13 +42,10 @@ android {
         targetSdkVersion 23
         versionCode 3
         versionName "3"
+        multiDexEnabled true
     }
 
     buildTypes {
-
-        debug {
-            debuggable true
-        }
 
         release {
             minifyEnabled false
