@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import java.io.IOException;
 import java.security.Permission;
 import java.util.ArrayList;
 
@@ -209,7 +210,11 @@ public class CompanyAdapter extends RecyclerView.
                                             ,phone.getText().toString(),cellphone.getText().toString(),descr);
 
                                     PositionPresenter presenter = new PositionPresenter(context,c);
-                                    presenter.searchPosition();
+                                    try {
+                                        presenter.searchPosition();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
 
                                     CharSequence text = "Posizione Azienda!!";
                                     int duration = Toast.LENGTH_SHORT;
@@ -226,28 +231,6 @@ public class CompanyAdapter extends RecyclerView.
                     return false;
                 }
             });
-            /*//Launch dialog to show description of place
-            itemView.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    //on click show a material dialog with information to easly find the way
-
-                    //save company description into a string
-                    description = mDataset.get(clickedPos).getDescription();
-                    Log.e("Position clicked", String.valueOf(clickedPos));
-
-                    MaterialDialog.Builder builder = new MaterialDialog.Builder(context)
-                            .title("Indicazioni Stradali " + name.getText())
-                            .content(description)
-                            .positiveText("OK");
-
-                    MaterialDialog dialog = builder.build();
-                    dialog.show();
-                }
-            });*/
-
-
         }
     }
 }

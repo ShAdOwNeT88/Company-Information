@@ -10,9 +10,11 @@ It also offers your import and export features.
 
 _Company-Information_ uses:
 
+* RxJava as Reactive Programming framework
 * SQLite for managing database
 * Dagger as dependency injection system
 * ButterKnife as View Injector
+
 
 ## License
 
