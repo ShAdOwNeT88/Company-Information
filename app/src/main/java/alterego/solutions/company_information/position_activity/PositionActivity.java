@@ -37,6 +37,6 @@ public class PositionActivity extends FragmentActivity implements OnMapReadyCall
         // Add a marker in Company Position and move the camera
         LatLng position = new LatLng(latitude,longitude);
         mMap.addMarker(new MarkerOptions().position(position).title("Posizione Azienda"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position,15));
     }
 }
