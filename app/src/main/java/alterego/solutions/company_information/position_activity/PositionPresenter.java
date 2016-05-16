@@ -5,7 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.util.Log;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
@@ -31,14 +35,29 @@ public class PositionPresenter implements IPositionPresenter {
     public void searchPosition() throws IOException {
         //get the address of the company
         String address = company.getStreet().concat(" , ").concat(company.getCountry());
-        //get Latitude and longitude for opening map
-        LatLng[] coordinates = getLatLong(address);
 
-        //Launching intent and passing latitude and longitude of company
-        Intent intent = new Intent(context, PositionActivity.class);
-        intent.putExtra("Latitude",coordinates[0].latitude);
-        intent.putExtra("Longitude",coordinates[0].longitude);
-        context.startActivity(intent);
+        if(isNetworkAvailable()) {
+            //get Latitude and longitude for opening map
+            LatLng[] coordinates = getLatLong(address);
+
+            //Launching intent and passing latitude and longitude of company
+            Intent intent = new Intent(context, PositionActivity.class);
+            intent.putExtra("CompanyName",company.getName());
+            intent.putExtra("Latitude", coordinates[0].latitude);
+            intent.putExtra("Longitude", coordinates[0].longitude);
+            context.startActivity(intent);
+        }
+
+        else{
+
+            MaterialDialog.Builder builder = new MaterialDialog.Builder(context)
+                    .title("Informazione di servizio ")
+                    .content("Attivarre la connessione dati / Wifi per l'utlilizzo delle mappe")
+                    .positiveText("OK");
+
+            MaterialDialog dialog = builder.build();
+            dialog.show();
+        }
     }
 
     @Override
@@ -66,5 +85,25 @@ public class PositionPresenter implements IPositionPresenter {
                     }
                 });
         return coordinates;
+    }
+
+    //Check if network is available
+    @Override
+    public boolean isNetworkAvailable() {
+        boolean connection = false;
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if(activeNetworkInfo != null && activeNetworkInfo.isConnected()){
+            connection = true;
+            //Log.e("NETWORK CONNECTION: " , String.valueOf(connection));
+        }
+
+        else if(activeNetworkInfo == null){
+            connection = false;
+            //Log.e("NETWORK CONNECTION: " , String.valueOf(connection));
+        }
+
+        return connection;
     }
 }

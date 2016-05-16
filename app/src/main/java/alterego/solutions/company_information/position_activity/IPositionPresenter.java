@@ -7,4 +7,6 @@ import java.io.IOException;
 public interface IPositionPresenter {
     public void searchPosition() throws IOException;
     public LatLng[] getLatLong(String address) throws IOException;
+    //Check if network is available
+    boolean isNetworkAvailable();
 }

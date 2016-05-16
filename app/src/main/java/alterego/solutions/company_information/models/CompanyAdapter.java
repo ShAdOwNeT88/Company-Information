@@ -161,10 +161,6 @@ public class CompanyAdapter extends RecyclerView.
                                             ,phone.getText().toString(),cellphone.getText().toString(),descr);
 
                                     dbHelper.deleteCompany(c);
-                                    CharSequence text = "Eliminazione Azienda: " + name.getText();
-                                    int duration = Toast.LENGTH_SHORT;
-                                    Toast toast = Toast.makeText(context, text, duration);
-                                    toast.show();
                                     return true;
 
                                 }
@@ -189,11 +185,6 @@ public class CompanyAdapter extends RecyclerView.
 
                                     context.startActivity(intent);
 
-                                    CharSequence text = "Modifica Voce!";
-                                    int duration = Toast.LENGTH_SHORT;
-                                    Toast toast = Toast.makeText(context, text, duration);
-                                    toast.show();
-
                                     //delete old company
                                     dbHelper.deleteCompany(c);
 
@@ -215,12 +206,6 @@ public class CompanyAdapter extends RecyclerView.
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
-
-                                    CharSequence text = "Posizione Azienda!!";
-                                    int duration = Toast.LENGTH_SHORT;
-                                    Toast toast = Toast.makeText(context, text, duration);
-                                    toast.show();
-
                                     return true;
 
                                 }
