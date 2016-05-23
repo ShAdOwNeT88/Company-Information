@@ -1,13 +1,8 @@
 package alterego.solutions.company_information.models;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -15,24 +10,18 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.io.IOException;
-import java.security.Permission;
 import java.util.ArrayList;
 
 import alterego.solutions.company_information.Company;
 import alterego.solutions.company_information.R;
-import alterego.solutions.company_information.add_company.AddActivity;
 import alterego.solutions.company_information.dbHelper.DBHelper;
 import alterego.solutions.company_information.modify_activity.ModifyActivity;
-import alterego.solutions.company_information.position_activity.PositionActivity;
 import alterego.solutions.company_information.position_activity.PositionPresenter;
-import alterego.solutions.company_information.runtime_permission.PermissionManager;
 
 public class CompanyAdapter extends RecyclerView.
         Adapter<CompanyAdapter.CompanyHolder> {
@@ -71,7 +60,6 @@ public class CompanyAdapter extends RecyclerView.
             @Override
             public void onClick(View v) {
                 clickedPos = holder.getAdapterPosition();
-
                 //retrive description based on the position clicked
                 description = mDataset.get(clickedPos).getDescription();
 
@@ -161,6 +149,7 @@ public class CompanyAdapter extends RecyclerView.
                                             ,phone.getText().toString(),cellphone.getText().toString(),descr);
 
                                     dbHelper.deleteCompany(c);
+                                    deleteItem(clickedpos);
                                     return true;
 
                                 }
@@ -187,6 +176,8 @@ public class CompanyAdapter extends RecyclerView.
 
                                     //delete old company
                                     dbHelper.deleteCompany(c);
+                                    deleteItem(clickedpos);
+
 
                                     return true;
 
