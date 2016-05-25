@@ -138,9 +138,9 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
 
         //Inizialize presenter to show all the company in database
-        //mSearchPresenter = new SearchPresenter("tutte", getApplicationContext());
-        //mAdapter = new CompanyAdapter(mSearchPresenter.manageQuery(),ctx);
-        //mRecyclerView.setAdapter(mAdapter);
+        mSearchPresenter = new SearchPresenter("tutte", getApplicationContext());
+        mAdapter = new CompanyAdapter(mSearchPresenter.manageQuery(),ctx);
+        mRecyclerView.setAdapter(mAdapter);
 
         mCompanySearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
