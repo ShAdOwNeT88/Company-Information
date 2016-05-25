@@ -47,6 +47,7 @@ public class CompanyAdapter extends RecyclerView.
     @Override
     public void onBindViewHolder(CompanyHolder holder, int position) {
 
+
         holder.name.setText(mDataset.get(position).getName());
         holder.country.setText(mDataset.get(position).getCountry());
         holder.street.setText(mDataset.get(position).getStreet());

@@ -93,6 +93,8 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        Context context = this;
+
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.search_company_swipe_container);
         mSwipeRefreshLayout.setEnabled(false);
         mSwipeRefreshLayout.setRefreshing(false);
@@ -107,7 +109,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         navigationView.setNavigationItemSelectedListener(this);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.search_company_recycle_view);
-        mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
@@ -137,15 +138,17 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
 
         //Inizialize presenter to show all the company in database
-        mSearchPresenter = new SearchPresenter("tutte", getApplicationContext());
-        mAdapter = new CompanyAdapter(mSearchPresenter.manageQuery(),ctx);
-        mRecyclerView.setAdapter(mAdapter);
+        //mSearchPresenter = new SearchPresenter("tutte", getApplicationContext());
+        //mAdapter = new CompanyAdapter(mSearchPresenter.manageQuery(),ctx);
+        //mRecyclerView.setAdapter(mAdapter);
 
         mCompanySearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                mSearchPresenter = new SearchPresenter(query, getApplicationContext());
-                mAdapter = new CompanyAdapter(mSearchPresenter.manageQuery(),ctx);
+                mSearchPresenter = new SearchPresenter(query, context);
+                ArrayList<Company> companies = mSearchPresenter.manageQuery();
+                mAdapter = new CompanyAdapter(companies,ctx);
+                mAdapter.notifyDataSetChanged();
                 mRecyclerView.setAdapter(mAdapter);
 
                 return true;
