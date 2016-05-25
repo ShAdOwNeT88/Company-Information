@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -92,6 +93,8 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        Context context = this;
+
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.search_company_swipe_container);
         mSwipeRefreshLayout.setEnabled(false);
         mSwipeRefreshLayout.setRefreshing(false);
@@ -106,7 +109,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         navigationView.setNavigationItemSelectedListener(this);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.search_company_recycle_view);
-        mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
@@ -143,8 +145,10 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         mCompanySearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                mSearchPresenter = new SearchPresenter(query, getApplicationContext());
-                mAdapter = new CompanyAdapter(mSearchPresenter.manageQuery(),ctx);
+                mSearchPresenter = new SearchPresenter(query, context);
+                ArrayList<Company> companies = mSearchPresenter.manageQuery();
+                mAdapter = new CompanyAdapter(companies,ctx);
+                mAdapter.notifyDataSetChanged();
                 mRecyclerView.setAdapter(mAdapter);
 
                 return true;
