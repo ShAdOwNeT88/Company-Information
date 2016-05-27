@@ -40,8 +40,8 @@ android {
         applicationId "alterego.solutions.company_information"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 3
-        versionName "3"
+        versionCode 4
+        versionName "3.1"
         multiDexEnabled true
     }
 
