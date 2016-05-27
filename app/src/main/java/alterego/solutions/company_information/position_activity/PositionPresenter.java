@@ -35,10 +35,10 @@ public class PositionPresenter implements IPositionPresenter {
     public void searchPosition() throws IOException {
         //get the address of the company
         String address = company.getStreet().concat(" , ").concat(company.getCountry());
+        //get Latitude and longitude for opening map
+        LatLng[] coordinates = getLatLong(address);
 
         if(isNetworkAvailable()) {
-            //get Latitude and longitude for opening map
-            LatLng[] coordinates = getLatLong(address);
 
             //Launching intent and passing latitude and longitude of company
             Intent intent = new Intent(context, PositionActivity.class);
