@@ -21,21 +21,20 @@ repositories {
         url "http://dl.bintray.com/lukaville/maven"
     }
 }
-// Required because retrolambda is on maven central
 repositories {
     mavenCentral()
     maven { url 'https://maven.fabric.io/public' }
 }
 
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric' //or apply plugin: 'java'
+apply plugin: 'io.fabric'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
-
+    
     defaultConfig {
         applicationId "alterego.solutions.company_information"
         minSdkVersion 19
@@ -45,19 +44,29 @@ android {
         multiDexEnabled true
     }
 
-    buildTypes {
+    signingConfigs {
+        release {
+            keyAlias ''
+            keyPassword ''
+            storeFile file('../android-keystore')
+            storePassword ''
+        }
+    }
 
+    buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            debuggable true
+            debuggable false
+            signingConfig signingConfigs.release
         }
     }
+
     lintOptions {
         disable 'InvalidPackage'
     }
 
-    packagingOptions{
+    packagingOptions {
         exclude('META-INF/services/javax.annotation.processing.Processor')
     }
 
@@ -68,23 +77,13 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-
-    //butterKnife
-    
-
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile('com.github.afollestad.material-dialogs:core:0.8.5.3@aar') {
         transitive = true
     }
-
-    //Custom Tab Helper
-    
-    //Crashalytics
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true;
     }
-    
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.android.support:support-v4:23.3.0'
     compile 'com.android.support:design:23.3.0'
@@ -96,4 +95,5 @@ dependencies {
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
     compile 'com.google.android.gms:play-services:8.4.0'
     compile 'io.reactivex:rxandroid:0.24.0'
+    testCompile 'junit:junit:4.12'
 }
