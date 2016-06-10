@@ -66,6 +66,8 @@ public class PositionPresenter implements IPositionPresenter {
 
         List<Address> addresses = geocoder.getFromLocationName(address, MAX_RESULT);
         final LatLng[] coordinates = new LatLng[1];
+        //set fake coordinates array first item.
+        coordinates[0] = new LatLng(0,0);
 
         Observable.from(addresses)
                 .subscribe(new Observer<Address>() {
@@ -81,7 +83,11 @@ public class PositionPresenter implements IPositionPresenter {
 
                     @Override
                     public void onNext(Address address) {
-                        coordinates[0] = new LatLng(address.getLatitude(),address.getLongitude());
+                        LatLng position = new LatLng(address.getLatitude(),address.getLongitude());
+                        coordinates[0] = position;
+                        //Log.e("ON NEXT","");
+                        //Log.e("Latitude: ",String.valueOf(position.latitude));
+                        //Log.e("Longitude: ",String.valueOf(position.longitude));
                     }
                 });
         return coordinates;

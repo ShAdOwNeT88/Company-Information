@@ -34,10 +34,23 @@ public class PositionActivity extends FragmentActivity implements OnMapReadyCall
         longitude = extras.getDouble("Longitude");
         nameCompany = extras.getString("CompanyName");
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        if(latitude != 0 && longitude != 0){
+            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.map);
+            mapFragment.getMapAsync(this);
+        }
+
+        else{
+            MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
+                    .title("Informazione di servizio ")
+                    .content("L'indirizzo registrato per l'azienda non è corretto e non può essere aperto nella mappa.")
+                    .positiveText("OK");
+
+            MaterialDialog dialog = builder.build();
+            dialog.show();
+        }
+
     }
 
     @Override
@@ -48,7 +61,5 @@ public class PositionActivity extends FragmentActivity implements OnMapReadyCall
             LatLng position = new LatLng(latitude, longitude);
             mMap.addMarker(new MarkerOptions().position(position).title(nameCompany));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 15));
-
-
     }
 }
